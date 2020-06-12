@@ -24,11 +24,11 @@ The following images show the hardware used for this project, from the left to t
 * HC-06 Bluetooth module to controlling the quadcopter througth an cellphone Android app.
 
 
-![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/motor.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/esc.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/frdm-k64f.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/mpu6050.jpg)
+![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/motor.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/esc.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/frdm-k64f.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/mpu6050.jpg)
 
 Below are some images of the quadcopter being assembled.
 
-![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/quad1.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/quad2.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/quad3.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/quad4.jpg)![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/quad5.jpg)
+![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/quad1.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/quad2.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/quad3.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/quad4.jpg)![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/quad5.jpg)
 
 
 
@@ -44,7 +44,7 @@ The project was developed and compilled using the following software:
 
 An Android app to controlling the Quadcopter using Bluetooth link was developed. The main activity app is show in the next image:
 
-![NO IMAGE](https://github.com/leandroGHsoft/Quadcopter/blob/master/images/app.png)
+![NO IMAGE](https://github.com/leandroGHsoft/FRDM-K64F_FreeRTOS_Quadcopter/blob/master/images/app.png)
 
 The app have the following controls:
 
