@@ -39,32 +39,71 @@
 #include "clock_config.h"
 #include "MK64F12.h"
 #include "fsl_debug_console.h"
-/* TODO: insert other include files here. */
+#include "fsl_device_registers.h"
 
-/* TODO: insert other definitions and declarations here. */
+/* FreeRTOS kernel includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
 
-/*
- * @brief   Application entry point.
- */
-int main(void) {
+/*********************************************************************
+ * Prototypes
+ ********************************************************************/
+static void vRedLEDToggleTask(void *pvParameters);
 
-  	/* Init board hardware. */
+
+
+/*********************************************************************
+ * @brief   Main function
+ ********************************************************************/
+int main(void)
+{
+  	// Initialization of board hardware
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
-  	/* Init FSL debug console. */
+  	// Initialization of FSL debug console.
     BOARD_InitDebugConsole();
 
-    PRINTF("Hello World\n");
+    // Variables
+    BaseType_t pass_or_nopass;
 
-    /* Force the counter to be placed into memory. */
-    volatile static int i = 0 ;
-    /* Enter an infinite loop, just incrementing a counter. */
-    while(1) {
-        i++ ;
-        /* 'Dummy' NOP to allow source level single stepping of
-            tight while() loop */
-        __asm volatile ("nop");
+    /*********************************************
+    * Task creation goes here
+    *********************************************/
+    // Task for print in console
+    pass_or_nopass = xTaskCreate(vRedLEDToggleTask,
+    		"RED_LED Toggle",
+			configMINIMAL_STACK_SIZE,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+    if (pass_or_nopass != pdPASS)
+    {
+		PRINTF("vRedLEDToggleTask creation failed!.\r\n");
+		while (1);
     }
+
+    /*********************************************
+    * Initialization of task scheduler
+	*********************************************/
+    vTaskStartScheduler();
+    for (;;);
+
     return 0 ;
+}
+
+
+/*********************************************************************
+ * Tasks implementation
+ ********************************************************************/
+static void vRedLEDToggleTask(void *pvParameters)
+{
+	const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
+	for (;;)
+	{
+		GPIO_PortToggle(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		vTaskDelay(xDelay250ms);
+	}
 }
