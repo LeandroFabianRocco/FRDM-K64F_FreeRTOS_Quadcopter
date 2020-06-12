@@ -1,6 +1,6 @@
-# Controlling a Quadcopter using FRDM-K64F and MPU6050 Accel/Gyro (Work in progress!!!)
+# Controlling a Quadcopter using the FRDM-K64F with FreeRTOS 
 
-This project is to control a quadcopter using a FRDM-K64F board and the MPU6050 Accel/Gyro.
+This project is to control a quadcopter using a FRDM-K64F board and the MPU6050 Accel/Gyro, based on a FreeRTOS software.
 
 > **Licensing:** 
 > 
