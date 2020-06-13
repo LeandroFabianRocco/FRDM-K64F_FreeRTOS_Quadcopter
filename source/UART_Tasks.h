@@ -16,10 +16,10 @@
  * Definitions
  ******************************************************************************/
 
-#define DEMO_UART UART4
-#define DEMO_UART_CLKSRC UART4_CLK_SRC
-#define DEMO_UART_CLK_FREQ CLOCK_GetFreq(UART4_CLK_SRC)
-#define DEMO_UART_RX_TX_IRQn UART4_RX_TX_IRQn
+#define UART UART4
+#define UART_CLKSRC UART4_CLK_SRC
+#define UART_CLK_FREQ CLOCK_GetFreq(UART4_CLK_SRC)
+#define UART_RX_TX_IRQn UART4_RX_TX_IRQn
 
 
 

@@ -42,8 +42,8 @@ void UART_Rx_Task(void *pvParameters)
     int error;
     size_t n = 0;
 
-    uart_config.srcclk = DEMO_UART_CLK_FREQ;
-    uart_config.base   = DEMO_UART;
+    uart_config.srcclk = UART_CLK_FREQ;
+    uart_config.base   = UART;
 
     if (0 > UART_RTOS_Init(&handle, &t_handle, &uart_config))
     {
