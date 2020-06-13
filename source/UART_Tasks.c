@@ -24,7 +24,7 @@ uart_rtos_handle_t handle;
 struct _uart_handle t_handle;
 
 uart_rtos_config_t uart_config = {
-    .baudrate    = 115200,
+    .baudrate    = 9600,
     .parity      = kUART_ParityDisabled,
     .stopbits    = kUART_OneStopBit,
     .buffer      = background_buffer,
@@ -49,6 +49,7 @@ void UART_Rx_Task(void *pvParameters)
     if (0 > UART_RTOS_Init(&handle, &t_handle, &uart_config))
     {
         vTaskSuspend(NULL);
+        PRINTF("Task suspended!\r\n");
     }
 
     /* Send introduction message. */
@@ -89,8 +90,9 @@ void UART_Rx_Task(void *pvParameters)
             	PRINTF("0x%x\r\n", recv_buffer[i]);
             }
         }
+        PRINTF("Data received!\r\n");
     } while (kStatus_Success == error);
-
+    PRINTF("UART deinit!\r\n");
     UART_RTOS_Deinit(&handle);
     vTaskSuspend(NULL);
 }
