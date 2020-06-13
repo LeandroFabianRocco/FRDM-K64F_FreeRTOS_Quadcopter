@@ -47,6 +47,9 @@
 #include "queue.h"
 #include "timers.h"
 
+// My own includes
+#include "UART_Tasks.h"
+
 /*********************************************************************
  * Prototypes
  ********************************************************************/
@@ -83,6 +86,19 @@ int main(void)
     {
 		PRINTF("vRedLEDToggleTask creation failed!.\r\n");
 		while (1);
+    }
+
+    // Task for UART4 module
+    pass_or_nopass = xTaskCreate(UART_Rx_Task,
+    		"UART4 Task",
+			configMINIMAL_STACK_SIZE + 100,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+    if (pass_or_nopass != pdPASS)
+    {
+    	PRINTF("UART_Rx_Task creation failed.\r\n");
+    	while (1);
     }
 
     /*********************************************
