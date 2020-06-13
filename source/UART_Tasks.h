@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "fsl_uart_freertos.h"
+#include "fsl_debug_console.h"
 
 
 /*******************************************************************************
