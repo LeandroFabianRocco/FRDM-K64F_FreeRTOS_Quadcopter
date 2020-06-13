@@ -89,8 +89,9 @@ int main(void)
     * Initialization of task scheduler
 	*********************************************/
     vTaskStartScheduler();
-    for (;;);
 
+    /********************************************/
+    for (;;);
     return 0 ;
 }
 
