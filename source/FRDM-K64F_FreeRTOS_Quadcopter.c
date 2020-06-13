@@ -89,6 +89,7 @@ int main(void)
     }
 
     // Task for UART4 module
+    NVIC_SetPriority(UART_RX_TX_IRQn, 5);
     pass_or_nopass = xTaskCreate(UART_Rx_Task,
     		"UART4 Task",
 			configMINIMAL_STACK_SIZE + 100,
