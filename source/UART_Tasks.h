@@ -20,8 +20,6 @@
 #define DEMO_UART_CLKSRC UART4_CLK_SRC
 #define DEMO_UART_CLK_FREQ CLOCK_GetFreq(UART4_CLK_SRC)
 #define DEMO_UART_RX_TX_IRQn UART4_RX_TX_IRQn
-/* Task priorities. */
-#define uart_task_PRIORITY (configMAX_PRIORITIES - 1)
 
 
 
