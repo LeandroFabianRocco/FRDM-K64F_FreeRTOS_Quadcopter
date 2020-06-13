@@ -141,6 +141,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="UART4" description="Peripheral UART4 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
@@ -172,6 +177,8 @@
                         <pin_feature name="gpio_init_state" value="false"/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="UART4" signal="RX" pin_num="86" pin_signal="PTC14/UART4_RX/FB_AD25"/>
+                  <pin peripheral="UART4" signal="TX" pin_num="87" pin_signal="PTC15/UART4_TX/FB_AD24"/>
                </pins>
             </function>
             <function name="BOARD_InitButtonsPins">
@@ -884,7 +891,7 @@
             <component name="system" uuid="f7102d96-6fee-4a76-9ba8-85b608da8bd7" type_id="system">
                <config_set_global name="global_system_definitions"/>
             </component>
-            <component name="msg" uuid="6487054f-55a8-446d-9b8d-6ee2d9a0bdf5" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="fe76afc8-903a-490e-819a-151ed72f29f1" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
             </component>
          </components>
