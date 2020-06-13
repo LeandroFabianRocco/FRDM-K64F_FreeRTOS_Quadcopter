@@ -14,11 +14,8 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-const char *to_send               = "FreeRTOS UART driver example!\r\n";
-const char *send_ring_overrun     = "\r\nRing buffer overrun!\r\n";
-const char *send_hardware_overrun = "\r\nHardware buffer overrun!\r\n";
-uint8_t background_buffer[32];
-uint8_t recv_buffer[4];
+uint8_t background_buffer[22];
+uint8_t recv_buffer[11];
 
 uart_rtos_handle_t handle;
 struct _uart_handle t_handle;
@@ -42,6 +39,7 @@ void UART_Rx_Task(void *pvParameters)
     int error;
     int i;
     size_t n = 0;
+    uint8_t joystick, throttle;
 
     uart_config.srcclk = UART_CLK_FREQ;
     uart_config.base   = UART;
@@ -52,48 +50,35 @@ void UART_Rx_Task(void *pvParameters)
         PRINTF("Task not initialized!\r\n");
     }
     for (;;){
-		/* Send introduction message. */
-		/*if (0 > UART_RTOS_Send(&handle, (uint8_t *)to_send, strlen(to_send)))
-		{
-			vTaskSuspend(NULL);
-		}*/
 
-		/* Receive user input and send it back to terminal. */
+    	PRINTF("UART_TASK\r\n");
+
 		do
 		{
 			error = UART_RTOS_Receive(&handle, recv_buffer, sizeof(recv_buffer), &n);
 			if (error == kStatus_UART_RxHardwareOverrun)
 			{
-				/* Notify about hardware buffer overrun */
-				/*if (kStatus_Success !=
-					UART_RTOS_Send(&handle, (uint8_t *)send_hardware_overrun, strlen(send_hardware_overrun)))
-				{
-					vTaskSuspend(NULL);
-				}*/
 				PRINTF("\r\nHardware buffer overrun!\r\n");
 			}
 			if (error == kStatus_UART_RxRingBufferOverrun)
 			{
-				/* Notify about ring buffer overrun */
-				/*if (kStatus_Success != UART_RTOS_Send(&handle, (uint8_t *)send_ring_overrun, strlen(send_ring_overrun)))
-				{
-					vTaskSuspend(NULL);
-				}*/
 				PRINTF("\r\nRing buffer overrun!\r\n");
 			}
 			if (n > 0)
 			{
-				/* send back the received data */
-				//UART_RTOS_Send(&handle, (uint8_t *)recv_buffer, n);
-				for (i = 0; i < n; i++)
+				/*for (i = 0; i < n; i++)
 				{
 					PRINTF("0x%x\r\n", recv_buffer[i]);
-				}
+				}*/
+				//PRINTF("data_received\r\n");
+				joystick = recv_buffer[7];
+				throttle = recv_buffer[3];
+				PRINTF("j = 0x%x; t = %3d\r\n", joystick, throttle);
 			}
-			PRINTF("Data received!\r\n");
+			PRINTF("inside loop\r\n");
 		} while (kStatus_Success == error);
-		PRINTF("UART deinit!\r\n");
+		//PRINTF("UART deinit!\r\n");
 		//UART_RTOS_Deinit(&handle);
-		vTaskSuspend(NULL);
+		//vTaskSuspend(NULL);
     }
 }
