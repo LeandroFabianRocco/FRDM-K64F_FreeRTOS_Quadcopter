@@ -40,6 +40,7 @@ uart_rtos_config_t uart_config = {
 void UART_Rx_Task(void *pvParameters)
 {
     int error;
+    int i;
     size_t n = 0;
 
     uart_config.srcclk = UART_CLK_FREQ;
@@ -51,10 +52,10 @@ void UART_Rx_Task(void *pvParameters)
     }
 
     /* Send introduction message. */
-    if (0 > UART_RTOS_Send(&handle, (uint8_t *)to_send, strlen(to_send)))
+    /*if (0 > UART_RTOS_Send(&handle, (uint8_t *)to_send, strlen(to_send)))
     {
         vTaskSuspend(NULL);
-    }
+    }*/
 
     /* Receive user input and send it back to terminal. */
     do
@@ -63,24 +64,30 @@ void UART_Rx_Task(void *pvParameters)
         if (error == kStatus_UART_RxHardwareOverrun)
         {
             /* Notify about hardware buffer overrun */
-            if (kStatus_Success !=
+            /*if (kStatus_Success !=
                 UART_RTOS_Send(&handle, (uint8_t *)send_hardware_overrun, strlen(send_hardware_overrun)))
             {
                 vTaskSuspend(NULL);
-            }
+            }*/
+        	PRINTF("\r\nHardware buffer overrun!\r\n");
         }
         if (error == kStatus_UART_RxRingBufferOverrun)
         {
             /* Notify about ring buffer overrun */
-            if (kStatus_Success != UART_RTOS_Send(&handle, (uint8_t *)send_ring_overrun, strlen(send_ring_overrun)))
+            /*if (kStatus_Success != UART_RTOS_Send(&handle, (uint8_t *)send_ring_overrun, strlen(send_ring_overrun)))
             {
                 vTaskSuspend(NULL);
-            }
+            }*/
+        	PRINTF("\r\nRing buffer overrun!\r\n");
         }
         if (n > 0)
         {
             /* send back the received data */
-            UART_RTOS_Send(&handle, (uint8_t *)recv_buffer, n);
+            //UART_RTOS_Send(&handle, (uint8_t *)recv_buffer, n);
+            for (i = 0; i < n; i++)
+            {
+            	PRINTF("0x%x\r\n", recv_buffer[i]);
+            }
         }
     } while (kStatus_Success == error);
 
