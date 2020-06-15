@@ -14,8 +14,8 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-uint8_t background_buffer[22];
-uint8_t recv_buffer[11];
+uint8_t background_buffer[30];
+uint8_t recv_buffer[3];
 
 uart_rtos_handle_t handle;
 struct _uart_handle t_handle;
@@ -29,6 +29,57 @@ uart_rtos_config_t uart_config = {
 };
 
 
+// CRC-8 table
+static uint8_t crc8_table[256];
+
+
+
+/*******************************************************************************
+ * Initialization of CRC-8 table
+ ******************************************************************************/
+static void init_crc8(void)
+{
+    int divident;
+    uint8_t bit;
+
+    for (divident=0; divident < 256; divident++)
+    {
+        uint8_t currByte = (uint8_t)divident;
+        for (bit=0; bit<8; bit++)
+        {
+            if ((currByte & 0x80) != 0)
+            {
+                currByte <<= 1;
+                currByte ^= GENERATOR;
+            }
+            else
+            {
+                currByte <<= 1;
+            }
+        }
+        crc8_table[divident] = currByte;
+    }
+}
+
+
+/*******************************************************************************
+ * Computation of CRC-8 code
+ ******************************************************************************/
+uint8_t Compute_CRC8(uint8_t *data, uint8_t size)
+{
+    uint8_t crc = 0x00;
+    uint8_t i;
+    uint8_t aux;
+    for (i = 0; i < size; i++)
+    {
+        aux = *data ^ crc;
+        crc = crc8_table[aux];
+        *data++;
+    }
+
+    return crc;
+}
+
 
 
 /*****************************************************************************
@@ -41,18 +92,19 @@ void UART_Rx_Task(void *pvParameters)
     size_t n = 0;
     uint8_t joystick, throttle;
 
+    uint8_t rest;
+
     uart_config.srcclk = UART_CLK_FREQ;
     uart_config.base   = UART;
+
+    // Initialization of CRC-8 table
+    init_crc8();
 
     if (0 > UART_RTOS_Init(&handle, &t_handle, &uart_config))
     {
         vTaskSuspend(NULL);
-        PRINTF("Task not initialized!\r\n");
     }
     for (;;){
-
-    	PRINTF("UART_TASK\r\n");
-
 		do
 		{
 			error = UART_RTOS_Receive(&handle, recv_buffer, sizeof(recv_buffer), &n);
@@ -66,19 +118,20 @@ void UART_Rx_Task(void *pvParameters)
 			}
 			if (n > 0)
 			{
-				/*for (i = 0; i < n; i++)
+				rest = Compute_CRC8(recv_buffer, sizeof(recv_buffer));
+				if (rest == 0) // CRC checked!
 				{
-					PRINTF("0x%x\r\n", recv_buffer[i]);
-				}*/
-				//PRINTF("data_received\r\n");
-				joystick = recv_buffer[7];
-				throttle = recv_buffer[3];
+					if (recv_buffer[0] == 0x2A)
+					{
+						throttle = recv_buffer[1];
+					}
+					else if (recv_buffer[0] == 0x23)
+					{
+						joystick = recv_buffer[1];
+					}
+				}
 				PRINTF("j = 0x%x; t = %3d\r\n", joystick, throttle);
 			}
-			PRINTF("inside loop\r\n");
 		} while (kStatus_Success == error);
-		//PRINTF("UART deinit!\r\n");
-		//UART_RTOS_Deinit(&handle);
-		//vTaskSuspend(NULL);
     }
 }
