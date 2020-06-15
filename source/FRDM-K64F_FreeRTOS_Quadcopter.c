@@ -114,7 +114,7 @@ int main(void)
 
 
 /*********************************************************************
- * Tasks implementation
+ * Red LED task
  ********************************************************************/
 static void vRedLEDToggleTask(void *pvParameters)
 {
