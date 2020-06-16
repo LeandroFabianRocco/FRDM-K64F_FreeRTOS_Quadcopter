@@ -145,6 +145,8 @@ BOARD_InitPins:
   - {pin_num: '68', peripheral: GPIOB, signal: 'GPIO, 22', pin_signal: PTB22/SPI2_SOUT/FB_AD29/CMP2_OUT, identifier: RED_LED, direction: OUTPUT, gpio_init_state: 'false'}
   - {pin_num: '86', peripheral: UART4, signal: RX, pin_signal: PTC14/UART4_RX/FB_AD25}
   - {pin_num: '87', peripheral: UART4, signal: TX, pin_signal: PTC15/UART4_TX/FB_AD24}
+  - {pin_num: '82', peripheral: I2C1, signal: SCL, pin_signal: ADC1_SE6b/PTC10/I2C1_SCL/FTM3_CH6/I2S0_RX_FS/FB_AD5}
+  - {pin_num: '83', peripheral: I2C1, signal: SDA, pin_signal: ADC1_SE7b/PTC11/LLWU_P11/I2C1_SDA/FTM3_CH7/I2S0_RXD1/FB_RW_b}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -191,6 +193,12 @@ void BOARD_InitPins(void)
 
     /* PORTB22 (pin 68) is configured as PTB22 */
     PORT_SetPinMux(BOARD_RED_LED_PORT, BOARD_RED_LED_PIN, kPORT_MuxAsGpio);
+
+    /* PORTC10 (pin 82) is configured as I2C1_SCL */
+    PORT_SetPinMux(PORTC, 10U, kPORT_MuxAlt2);
+
+    /* PORTC11 (pin 83) is configured as I2C1_SDA */
+    PORT_SetPinMux(PORTC, 11U, kPORT_MuxAlt2);
 
     /* PORTC14 (pin 86) is configured as UART4_RX */
     PORT_SetPinMux(PORTC, 14U, kPORT_MuxAlt3);
