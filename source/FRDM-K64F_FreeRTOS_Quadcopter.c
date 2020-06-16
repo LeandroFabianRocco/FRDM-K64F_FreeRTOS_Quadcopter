@@ -49,6 +49,7 @@
 
 // My own includes
 #include "UART_Tasks.h"
+#include "MPU6050_Tasks.h"
 
 /*********************************************************************
  * Prototypes
@@ -101,6 +102,16 @@ int main(void)
     	PRINTF("UART_Rx_Task creation failed.\r\n");
     	while (1);
     }
+
+    // Task for I2C1 module
+    NVIC_SetPriority(I2C1_IRQN, 4);
+    pass_or_nopass = xTaskCreate(I2C1_master_task,
+    		"I2C1 Task",
+			configMINIMAL_STACK_SIZE + 100,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+
 
     /*********************************************
     * Initialization of task scheduler
