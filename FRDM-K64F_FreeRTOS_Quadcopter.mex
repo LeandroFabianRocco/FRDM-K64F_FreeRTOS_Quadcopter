@@ -146,6 +146,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="I2C1" description="Peripheral I2C1 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
@@ -179,6 +184,8 @@
                   </pin>
                   <pin peripheral="UART4" signal="RX" pin_num="86" pin_signal="PTC14/UART4_RX/FB_AD25"/>
                   <pin peripheral="UART4" signal="TX" pin_num="87" pin_signal="PTC15/UART4_TX/FB_AD24"/>
+                  <pin peripheral="I2C1" signal="SCL" pin_num="82" pin_signal="ADC1_SE6b/PTC10/I2C1_SCL/FTM3_CH6/I2S0_RX_FS/FB_AD5"/>
+                  <pin peripheral="I2C1" signal="SDA" pin_num="83" pin_signal="ADC1_SE7b/PTC11/LLWU_P11/I2C1_SDA/FTM3_CH7/I2S0_RXD1/FB_RW_b"/>
                </pins>
             </function>
             <function name="BOARD_InitButtonsPins">
@@ -891,7 +898,7 @@
             <component name="system" uuid="f7102d96-6fee-4a76-9ba8-85b608da8bd7" type_id="system">
                <config_set_global name="global_system_definitions"/>
             </component>
-            <component name="msg" uuid="fe76afc8-903a-490e-819a-151ed72f29f1" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="eff96718-211d-45b8-8461-3971051f5691" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
             </component>
          </components>
