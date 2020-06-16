@@ -104,7 +104,8 @@ void UART_Rx_Task(void *pvParameters)
     {
         vTaskSuspend(NULL);
     }
-    for (;;){
+    for (;;)
+    {
 		do
 		{
 			error = UART_RTOS_Receive(&handle, recv_buffer, sizeof(recv_buffer), &n);
