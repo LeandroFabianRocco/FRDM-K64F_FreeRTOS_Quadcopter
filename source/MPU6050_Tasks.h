@@ -128,11 +128,11 @@ void I2C1_master_task(void *pvParameters);
 /*********************************************************************************************
  * @brief Gets the WHO_AM_I value
  *
- * @param void
+ * @param I2C RTOS handle
  *
  * @return status flag. Return true if no error
  *********************************************************************************************/
-bool MPU6050_ReadSensorWhoAmI(void);
+bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle);
 
 
 
