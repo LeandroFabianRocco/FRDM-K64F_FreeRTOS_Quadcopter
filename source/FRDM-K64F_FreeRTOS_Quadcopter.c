@@ -46,6 +46,7 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "semphr.h"
 
 // My own includes
 #include "UART_Tasks.h"
@@ -77,7 +78,7 @@ int main(void)
     * Task creation goes here
     *********************************************/
     // Task for print in console
-    pass_or_nopass = xTaskCreate(vRedLEDToggleTask,
+    /*pass_or_nopass = xTaskCreate(vRedLEDToggleTask,
     		"RED_LED Toggle",
 			configMINIMAL_STACK_SIZE,
 			NULL,
@@ -87,10 +88,10 @@ int main(void)
     {
 		PRINTF("vRedLEDToggleTask creation failed!.\r\n");
 		while (1);
-    }
+    }*/
 
     // Task for UART4 module
-    NVIC_SetPriority(UART_RX_TX_IRQn, 5);
+    /*NVIC_SetPriority(UART_RX_TX_IRQn, 5);
     pass_or_nopass = xTaskCreate(UART_Rx_Task,
     		"UART4 Task",
 			configMINIMAL_STACK_SIZE + 100,
@@ -101,13 +102,13 @@ int main(void)
     {
     	PRINTF("UART_Rx_Task creation failed.\r\n");
     	while (1);
-    }
+    }*/
 
     // Task for I2C1 module
-    NVIC_SetPriority(I2C1_IRQN, 4);
+    NVIC_SetPriority(I2C1_IRQN, 5);
     pass_or_nopass = xTaskCreate(I2C1_master_task,
     		"I2C1 Task",
-			configMINIMAL_STACK_SIZE + 100,
+			configMINIMAL_STACK_SIZE + 300,
 			NULL,
 			configMAX_PRIORITIES - 1,
 			NULL);
