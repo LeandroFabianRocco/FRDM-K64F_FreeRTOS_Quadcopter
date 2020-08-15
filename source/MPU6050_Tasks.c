@@ -31,6 +31,8 @@ void I2C1_master_task(void *pvParameters)
     masterConfig.baudRate_Bps = I2C1_BAUDRATE;
     sourceClock               = I2C1_CLK_FREQ;
 
+    masterConfig.enableStopHold = true;
+
     status = I2C_RTOS_Init(&master_rtos_handle, I2C1, &masterConfig, sourceClock);
     if (status != kStatus_Success)
     {

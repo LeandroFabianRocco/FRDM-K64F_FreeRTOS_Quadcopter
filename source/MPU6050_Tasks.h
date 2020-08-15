@@ -136,4 +136,5 @@ bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle);
 
 
 
+
 #endif /* MPU6050_TASKS_H_ */
