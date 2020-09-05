@@ -82,7 +82,7 @@ bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle)
 	masterXfer.dataSize       = 1;
 	masterXfer.flags          = kI2C_TransferNoStopFlag;
 
-	status = I2C_RTOS_Transfer(&master_handle, &masterXfer);
+	status = I2C_RTOS_Transfer(master_handle, &masterXfer);
 	if (status != kStatus_Success)
 	{
 		PRINTF("I2C master: error during write transaction, %d", status);
@@ -97,7 +97,7 @@ bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle)
 	masterXfer.data           = &who_am_i_value;
 	masterXfer.dataSize       = 1;
 	masterXfer.flags          = kI2C_TransferRepeatedStartFlag;
-	status = I2C_RTOS_Transfer(&master_handle, &masterXfer);
+	status = I2C_RTOS_Transfer(master_handle, &masterXfer);
 	if (status != kStatus_Success)
 	{
 		PRINTF("I2C master: error during write transaction, %d", status);
