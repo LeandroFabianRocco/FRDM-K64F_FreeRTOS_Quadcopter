@@ -46,6 +46,11 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "semphr.h"
+
+// My own includes
+#include "UART_Tasks.h"
+#include "MPU6050_Tasks.h"
 
 /*********************************************************************
  * Prototypes
@@ -85,18 +90,43 @@ int main(void)
 		while (1);
     }
 
+    // Task for UART4 module
+    NVIC_SetPriority(UART_RX_TX_IRQn, 5);
+    pass_or_nopass = xTaskCreate(UART_Rx_Task,
+    		"UART4 Task",
+			configMINIMAL_STACK_SIZE + 100,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+    if (pass_or_nopass != pdPASS)
+    {
+    	PRINTF("UART_Rx_Task creation failed.\r\n");
+    	while (1);
+    }
+
+    // Task for I2C1 module
+    NVIC_SetPriority(I2C1_IRQN, 3);
+    pass_or_nopass = xTaskCreate(I2C1_master_task,
+    		"I2C1 Task",
+			configMINIMAL_STACK_SIZE + 100,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+
+
     /*********************************************
     * Initialization of task scheduler
 	*********************************************/
     vTaskStartScheduler();
-    for (;;);
 
+    /********************************************/
+    for (;;);
     return 0 ;
 }
 
 
 /*********************************************************************
- * Tasks implementation
+ * Red LED task
  ********************************************************************/
 static void vRedLEDToggleTask(void *pvParameters)
 {
