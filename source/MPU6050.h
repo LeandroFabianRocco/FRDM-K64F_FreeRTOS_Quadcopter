@@ -120,5 +120,27 @@
 bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle);
 
 
+/*********************************************************************************************
+ * @brief Configure MPU6050 module
+ *
+ * @param void
+ *
+ * @return void
+ *********************************************************************************************/
+bool MPU6050_Configure_Device(i2c_rtos_handle_t *master_handle);
+
+
+/*********************************************************************************************
+ * @brief Write sensor register
+ *
+ * @param base I2C peripheral base address.
+ * @param sensor device address
+ * @param register address
+ * @param data value address
+ *
+ * @return status flag. True if success
+ *********************************************************************************************/
+bool MPU6050_WriteAccelReg(i2c_rtos_handle_t *master_handle, uint8_t device_addr, uint8_t reg_addr, uint8_t value);
+
 
 #endif /* MPU6050_H_ */
