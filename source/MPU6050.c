@@ -152,3 +152,62 @@ bool MPU6050_WriteAccelReg(i2c_rtos_handle_t *master_handle, uint8_t device_addr
 
 	return true;
 }
+
+
+
+
+/*********************************************************************************************
+ * @brief Read accelerometer data
+ *
+ * @param base I2C peripheral base address.
+ * @param sensor device address
+ * @param XYZ readings
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_Read_Accel_Data(i2c_rtos_handle_t *master_handle, uint8_t device_addr, int16_t *xyz_accel)
+{
+	uint8_t readBuff[6];
+	MPU6050_ReadAccelRegs(master_handle, MPU6050_DEVICE_ADDRESS_0, MPU6050_ACCEL_XOUT_H, readBuff, 6);
+	xyz_accel[0] = (((int16_t)readBuff[0]) << 8) | readBuff[1];
+	xyz_accel[1] = (((int16_t)readBuff[2]) << 8) | readBuff[3];
+	xyz_accel[2] = (((int16_t)readBuff[4]) << 8) | readBuff[5];
+}
+
+
+
+
+/*********************************************************************************************
+ * @brief Read sensor register
+ *
+ * @param base I2C peripheral base address.
+ * @param sensor device address
+ * @param register address
+ * @param pointer to data read
+ * @param data size
+ *
+ * @return status flag. True if success
+ *********************************************************************************************/
+bool MPU6050_ReadAccelRegs(i2c_rtos_handle_t *master_handle, uint8_t device_addr, uint8_t reg_addr, uint8_t *rxBuff, uint32_t rxSize)
+{
+    i2c_master_transfer_t masterXfer;
+    status_t status;
+    memset(&masterXfer, 0, sizeof(masterXfer));
+    masterXfer.slaveAddress   = device_addr;
+    masterXfer.direction      = kI2C_Read;
+    masterXfer.subaddress     = reg_addr;
+    masterXfer.subaddressSize = 1;
+    masterXfer.data           = rxBuff;
+    masterXfer.dataSize       = rxSize;
+    masterXfer.flags          = kI2C_TransferDefaultFlag;
+
+
+    status = I2C_RTOS_Transfer(master_handle, &masterXfer);
+	if (status != kStatus_Success)
+	{
+		PRINTF("I2C master: error during read transaction, %d", status);
+		return false;
+	}
+
+    return true;
+}

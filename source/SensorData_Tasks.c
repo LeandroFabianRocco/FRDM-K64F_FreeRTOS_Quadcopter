@@ -45,13 +45,16 @@ void SensorData_task(void *pvParameters)
     PRINTF("I2C1 module initialized!\r\n");
     const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
     bool isOK;
+    isOK = MPU6050_ReadSensorWhoAmI(&master_rtos_handle);
+	if (isOK)
+		PRINTF("WHO AM I received!!\r\n");
+	else
+		PRINTF("No device found!!\r\n");
+
+
     for (;;)
     {
-    	isOK = MPU6050_ReadSensorWhoAmI(&master_rtos_handle);
-    	if (isOK)
-    		PRINTF("WHO AM I received!!\r\n");
-    	else
-    		PRINTF("No device found!!\r\n");
+
     	vTaskDelay(xDelay250ms);
     }
 }

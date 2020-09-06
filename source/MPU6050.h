@@ -143,4 +143,29 @@ bool MPU6050_Configure_Device(i2c_rtos_handle_t *master_handle);
 bool MPU6050_WriteAccelReg(i2c_rtos_handle_t *master_handle, uint8_t device_addr, uint8_t reg_addr, uint8_t value);
 
 
+
+/*********************************************************************************************
+ * @brief Read sensor register
+ *
+ * @param base I2C peripheral base address.
+ * @param sensor device address
+ * @param register address
+ * @param pointer to data read
+ * @param data size
+ *
+ * @return status flag. True if success
+ *********************************************************************************************/
+bool MPU6050_ReadAccelRegs(i2c_rtos_handle_t *master_handle, uint8_t device_addr, uint8_t reg_addr, uint8_t *rxBuff, uint32_t rxSize);
+
+/*********************************************************************************************
+ * @brief Read accelerometer data
+ *
+ * @param base I2C peripheral base address.
+ * @param sensor device address
+ * @param XYZ readings
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_Read_Accel_Data(i2c_rtos_handle_t *master_handle, uint8_t device_addr, int16_t *xyz_accel);
+
 #endif /* MPU6050_H_ */
