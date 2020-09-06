@@ -104,10 +104,10 @@ int main(void)
     	while (1);
     }
 
-    // Task for I2C1 module
+    // Task to acquire Accel/Gyro/Magnet data from sensors
     NVIC_SetPriority(I2C1_IRQN, 3);
     pass_or_nopass = xTaskCreate(SensorData_task,
-    		"I2C1 Task",
+    		"Sensors Task",
 			configMINIMAL_STACK_SIZE + 100,
 			NULL,
 			configMAX_PRIORITIES - 1,
