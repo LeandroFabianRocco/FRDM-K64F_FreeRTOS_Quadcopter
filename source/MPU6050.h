@@ -177,6 +177,6 @@ void MPU6050_Read_Accel_Data(i2c_rtos_handle_t *master_handle, uint8_t device_ad
  *
  * @return void
  *********************************************************************************************/
-void MPU6050_GetgAcceleration(float *accel);
+void MPU6050_GetgAcceleration(i2c_rtos_handle_t *master_handle, float *accel);
 
 #endif /* MPU6050_H_ */
