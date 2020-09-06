@@ -35,6 +35,13 @@ void SensorData_task(void *pvParameters)
     }
 
 
+    status = MPU6050_Configure_Device(&master_rtos_handle);
+    if (status != true)
+	{
+		PRINTF("I2C master: error during configuration MPU6050 mmodule, %d", status);
+	}
+
+
     PRINTF("I2C1 module initialized!\r\n");
     const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
     bool isOK;
