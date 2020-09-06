@@ -211,3 +211,20 @@ bool MPU6050_ReadAccelRegs(i2c_rtos_handle_t *master_handle, uint8_t device_addr
 
     return true;
 }
+
+
+/*********************************************************************************************
+ * @brief Get the Acceleration in g units
+ *
+ * @param pointer to acceleration vector -- xyz values
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_GetgAcceleration(float *accel)
+{
+	int16_t xyz_accel[3];
+	MPU6050_Read_Accel_Data(I2C1, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
+	accel[0] = (float)xyz_accel[0] / MPU6050_ACCEL_FACTOR;
+	accel[1] = (float)xyz_accel[1] / MPU6050_ACCEL_FACTOR;
+	accel[2] = (float)xyz_accel[2] / MPU6050_ACCEL_FACTOR;
+}
