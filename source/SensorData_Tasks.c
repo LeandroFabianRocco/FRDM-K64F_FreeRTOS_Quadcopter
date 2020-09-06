@@ -6,6 +6,7 @@
  */
 
 #include <SensorData_Tasks.h>
+#include "MPU6050.h"
 
 
 
@@ -52,52 +53,4 @@ void SensorData_task(void *pvParameters)
 
 
 
-/*********************************************************************************************
- * @brief Gets the WHO_AM_I value
- *
- * @param I2C RTOS handle
- *
- * @return status flag. Return true if no error
- *********************************************************************************************/
-bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle)
-{
-	status_t status;
-	uint8_t who_am_i_reg          = MPU6050_WHO_AM_I;
-	uint8_t who_am_i_value        = 0x00;
-	i2c_master_transfer_t masterXfer;
-	memset(&masterXfer, 0, sizeof(masterXfer));
 
-	// START + Slave_address (write_bit); Reg_address
-	masterXfer.slaveAddress   = MPU6050_DEVICE_ADDRESS_0;
-	masterXfer.direction      = kI2C_Write;
-	masterXfer.subaddress     = 0;
-	masterXfer.subaddressSize = 0;
-	masterXfer.data           = &who_am_i_reg;
-	masterXfer.dataSize       = 1;
-	masterXfer.flags          = kI2C_TransferNoStopFlag;
-
-	status = I2C_RTOS_Transfer(master_handle, &masterXfer);
-	if (status != kStatus_Success)
-	{
-		PRINTF("I2C master: error during write transaction, %d", status);
-		return false;
-	}
-
-
-	// START + Slave_address (read_bit); recibo dato
-	masterXfer.direction      = kI2C_Read;
-	masterXfer.subaddress     = 0;
-	masterXfer.subaddressSize = 0;
-	masterXfer.data           = &who_am_i_value;
-	masterXfer.dataSize       = 1;
-	masterXfer.flags          = kI2C_TransferRepeatedStartFlag;
-	status = I2C_RTOS_Transfer(master_handle, &masterXfer);
-	if (status != kStatus_Success)
-	{
-		PRINTF("I2C master: error during write transaction, %d", status);
-		return false;
-	}
-
-
-	return true;
-}
