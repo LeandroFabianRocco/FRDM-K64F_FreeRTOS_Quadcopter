@@ -143,8 +143,6 @@ bool MPU6050_WriteAccelReg(i2c_rtos_handle_t *master_handle, uint8_t device_addr
 	masterXfer.dataSize       = 1;
 	masterXfer.flags          = kI2C_TransferDefaultFlag;
 
-	//I2C_MasterTransferNonBlocking(I2C1, &mpu_g_m_handle, &masterXfer);
-
 	status = I2C_RTOS_Transfer(master_handle, &masterXfer);
 	if (status != kStatus_Success)
 	{
