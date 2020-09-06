@@ -1,19 +1,19 @@
 /*
- * MPU6050_Tasks.c
+ * SensorData_Tasks.c
  *
  *  Created on: 16 jun. 2020
  *      Author: leandro
  */
 
-#include "MPU6050_Tasks.h"
+#include <SensorData_Tasks.h>
 
 
 
 
 /*****************************************************************************
- * @brief Task responsible for receive data from I2C module
+ * @brief Task responsible for receive data from Accel/Gyro/Magnet sensors
  ****************************************************************************/
-void I2C1_master_task(void *pvParameters)
+void SensorData_task(void *pvParameters)
 {
     i2c_rtos_handle_t master_rtos_handle;
     i2c_master_config_t masterConfig;
@@ -21,12 +21,6 @@ void I2C1_master_task(void *pvParameters)
     uint32_t sourceClock;
     status_t status;
 
-    /*
-     * masterConfig.baudRate_Bps = 100000U;
-     * masterConfig.enableStopHold = false;
-     * masterConfig.glitchFilterWidth = 0U;
-     * masterConfig.enableMaster = true;
-     */
     I2C_MasterGetDefaultConfig(&masterConfig);
     masterConfig.baudRate_Bps = I2C1_BAUDRATE;
     sourceClock               = I2C1_CLK_FREQ;

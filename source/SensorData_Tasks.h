@@ -1,12 +1,12 @@
 /*
- * MPU6050_Tasks.h
+ * SensorData_Tasks.h
  *
  *  Created on: 16 jun. 2020
  *      Author: leandro
  */
 
-#ifndef MPU6050_TASKS_H_
-#define MPU6050_TASKS_H_
+#ifndef SENSORDATA_TASKS_H_
+#define SENSORDATA_TASKS_H_
 
 
 #include "fsl_i2c.h"
@@ -121,9 +121,9 @@
 
 
 /*****************************************************************************
- * @brief Task responsible for receive data from I2C module
+ * @brief Task responsible for receive data from Accel/Gyro/Magnet sensors
  ****************************************************************************/
-void I2C1_master_task(void *pvParameters);
+void SensorData_task(void *pvParameters);
 
 /*********************************************************************************************
  * @brief Gets the WHO_AM_I value
@@ -137,4 +137,4 @@ bool MPU6050_ReadSensorWhoAmI(i2c_rtos_handle_t *master_handle);
 
 
 
-#endif /* MPU6050_TASKS_H_ */
+#endif /* SENSORDATA_TASKS_H_ */
