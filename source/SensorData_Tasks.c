@@ -51,10 +51,12 @@ void SensorData_task(void *pvParameters)
 	else
 		PRINTF("No device found!!\r\n");
 
-	int16_t xyz_accel[3];
+	float xyz_accel[3];
     for (;;)
     {
-    	MPU6050_Read_Accel_Data(&master_rtos_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
+    	//MPU6050_Read_Accel_Data(&master_rtos_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
+    	MPU6050_GetgAcceleration(&master_rtos_handle, xyz_accel);
+    	PRINTF("%1.3f, %1.3f, %1.3f\r\n", xyz_accel[0], xyz_accel[1], xyz_accel[2]);
 
     	vTaskDelay(xDelay250ms);
     }
