@@ -77,7 +77,7 @@ int main(void)
     /*********************************************
     * Task creation goes here
     *********************************************/
-    // Task for print in console
+    // Task for toggle RED LED
     pass_or_nopass = xTaskCreate(vRedLEDToggleTask,
     		"RED_LED Toggle",
 			configMINIMAL_STACK_SIZE,
