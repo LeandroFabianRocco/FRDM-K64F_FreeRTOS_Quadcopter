@@ -51,6 +51,7 @@
 // My own includes
 #include "UART_Tasks.h"
 #include "SensorData_Tasks.h"
+#include "MotorControl_Tasks.h"
 
 /*********************************************************************
  * Prototypes
