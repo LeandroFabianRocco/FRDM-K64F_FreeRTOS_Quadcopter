@@ -84,6 +84,16 @@ void FTM0_init(FTM_Type *base)
 	FTM_StartTimer(base, kFTM_FixedClock);
 }
 
+/*******************************************************************************
+ * Throttle to CnV value
+ ******************************************************************************/
+float throttle2CnV(uint8_t throttle)
+{
+	float x1 = (float)throttle * (CnV_MAX - CnV_MIN) * 0.01 + CnV_MIN;
+	//return (float)(throttle * (CnV_MAX - CnV_MIN) * 0.01 + CnV_MIN);
+	return x1;
+}
+
 
 
 /*********************************************************************************************
@@ -101,17 +111,18 @@ void ControllingMotors_task(void *pvParameters)
 
 	const TickType_t xDelay500ms = pdMS_TO_TICKS(500);
 
-	int counter = 391;
+	uint8_t counter = 0;
     for (;;)
     {
+    	float x1 = throttle2CnV(counter);
+    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH0);
+    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH1);
+    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH2);
+    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH3);
+    	PRINTF("Contador = %3.2f!!\r\n", x1);
     	counter += 1;
-    	if (counter > 782)
-    		counter = 391;
-    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH0);
-    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH1);
-    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH2);
-    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH3);
-    	PRINTF("Contador = %3d!!\r\n", counter);
+		if (counter > 100)
+			counter = 0;
     	vTaskDelay(xDelay500ms);
     }
 }
