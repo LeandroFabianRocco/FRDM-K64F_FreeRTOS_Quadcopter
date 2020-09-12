@@ -113,6 +113,14 @@ int main(void)
 			configMAX_PRIORITIES - 1,
 			NULL);
 
+    // Task to control change motors throttle
+    pass_or_nopass = xTaskCreate(MotorControl_task,
+    		"Motors Task",
+			configMINIMAL_STACK_SIZE + 100,
+			NULL,
+			configMAX_PRIORITIES - 1,
+			NULL);
+
 
     /*********************************************
     * Initialization of task scheduler
