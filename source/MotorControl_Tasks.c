@@ -95,6 +95,9 @@ void FTM0_init(FTM_Type *base)
  *********************************************************************************************/
 void ControllingMotors_task(void *pvParameters)
 {
+	// FTM0 module initialization
+	FTM0_init(FTM_MODULE);
+	PRINTF("FTM0 module initialized!!\r\n");
 
     for (;;)
     {

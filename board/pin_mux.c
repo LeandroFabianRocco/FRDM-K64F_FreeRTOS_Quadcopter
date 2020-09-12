@@ -147,6 +147,10 @@ BOARD_InitPins:
   - {pin_num: '87', peripheral: UART4, signal: TX, pin_signal: PTC15/UART4_TX/FB_AD24}
   - {pin_num: '82', peripheral: I2C1, signal: SCL, pin_signal: ADC1_SE6b/PTC10/I2C1_SCL/FTM3_CH6/I2S0_RX_FS/FB_AD5}
   - {pin_num: '83', peripheral: I2C1, signal: SDA, pin_signal: ADC1_SE7b/PTC11/LLWU_P11/I2C1_SDA/FTM3_CH7/I2S0_RXD1/FB_RW_b}
+  - {pin_num: '71', peripheral: FTM0, signal: 'CH, 0', pin_signal: ADC0_SE15/PTC1/LLWU_P6/SPI0_PCS3/UART1_RTS_b/FTM0_CH0/FB_AD13/I2S0_TXD0}
+  - {pin_num: '72', peripheral: FTM0, signal: 'CH, 1', pin_signal: ADC0_SE4b/CMP1_IN0/PTC2/SPI0_PCS2/UART1_CTS_b/FTM0_CH1/FB_AD12/I2S0_TX_FS}
+  - {pin_num: '77', peripheral: FTM0, signal: 'CH, 2', pin_signal: PTC5/LLWU_P9/SPI0_SCK/LPTMR0_ALT2/I2S0_RXD0/FB_AD10/CMP0_OUT/FTM0_CH2}
+  - {pin_num: '76', peripheral: FTM0, signal: 'CH, 3', pin_signal: PTC4/LLWU_P8/SPI0_PCS0/UART1_TX/FTM0_CH3/FB_AD11/CMP1_OUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -194,6 +198,9 @@ void BOARD_InitPins(void)
     /* PORTB22 (pin 68) is configured as PTB22 */
     PORT_SetPinMux(BOARD_RED_LED_PORT, BOARD_RED_LED_PIN, kPORT_MuxAsGpio);
 
+    /* PORTC1 (pin 71) is configured as FTM0_CH0 */
+    PORT_SetPinMux(PORTC, 1U, kPORT_MuxAlt4);
+
     /* PORTC10 (pin 82) is configured as I2C1_SCL */
     PORT_SetPinMux(PORTC, 10U, kPORT_MuxAlt2);
 
@@ -205,6 +212,15 @@ void BOARD_InitPins(void)
 
     /* PORTC15 (pin 87) is configured as UART4_TX */
     PORT_SetPinMux(PORTC, 15U, kPORT_MuxAlt3);
+
+    /* PORTC2 (pin 72) is configured as FTM0_CH1 */
+    PORT_SetPinMux(PORTC, 2U, kPORT_MuxAlt4);
+
+    /* PORTC4 (pin 76) is configured as FTM0_CH3 */
+    PORT_SetPinMux(PORTC, 4U, kPORT_MuxAlt4);
+
+    /* PORTC5 (pin 77) is configured as FTM0_CH2 */
+    PORT_SetPinMux(PORTC, 5U, kPORT_MuxAlt7);
 }
 
 /* clang-format off */
