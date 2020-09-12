@@ -6,7 +6,7 @@
  */
 
 
-#include "MotorControl_Tasks.c"
+#include "MotorControl_Tasks.h"
 
 
 
@@ -93,7 +93,7 @@ void FTM0_init(FTM_Type *base)
  *
  * @return void
  *********************************************************************************************/
-void MotorControl_task(void *pvParameters)
+void ControllingMotors_task(void *pvParameters)
 {
 
     for (;;)

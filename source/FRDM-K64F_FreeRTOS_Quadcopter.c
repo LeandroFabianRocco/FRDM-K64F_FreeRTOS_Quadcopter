@@ -115,7 +115,7 @@ int main(void)
 			NULL);
 
     // Task to control change motors throttle
-    pass_or_nopass = xTaskCreate(MotorControl_task,
+    pass_or_nopass = xTaskCreate(ControllingMotors_task,
     		"Motors Task",
 			configMINIMAL_STACK_SIZE + 100,
 			NULL,

@@ -16,6 +16,7 @@
 #include "fsl_ftm.h"
 #include "stdint.h"
 #include "fsl_debug_console.h"
+#include "stdint.h"
 
 
 /*************************************************************************
@@ -65,7 +66,7 @@ void FTM0_init(FTM_Type *base);
  *
  * @return void
  *********************************************************************************************/
-void MotorControl_task(void *pvParameters)
+void ControllingMotors_task(void *pvParameters);
 
 
 
