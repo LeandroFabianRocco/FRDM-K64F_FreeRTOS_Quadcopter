@@ -99,9 +99,20 @@ void ControllingMotors_task(void *pvParameters)
 	FTM0_init(FTM_MODULE);
 	PRINTF("FTM0 module initialized!!\r\n");
 
+	const TickType_t xDelay500ms = pdMS_TO_TICKS(500);
+
+	int counter = 391;
     for (;;)
     {
-
+    	counter += 1;
+    	if (counter > 782)
+    		counter = 391;
+    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH0);
+    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH1);
+    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH2);
+    	set_pwm_CnV(FTM_MODULE, counter, PWM_CH3);
+    	PRINTF("Contador = %3d!!\r\n", counter);
+    	vTaskDelay(xDelay500ms);
     }
 }
 
