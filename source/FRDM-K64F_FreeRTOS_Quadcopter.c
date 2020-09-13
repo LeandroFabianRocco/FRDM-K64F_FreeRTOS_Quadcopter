@@ -81,7 +81,7 @@ typedef struct
 
 	uint8_t eThrottle;
 	DataValid_t evThrottle;
-} AttitudeData_t;
+} Attitude_Joystick_Data_t;
 
 
 
@@ -117,7 +117,7 @@ int main(void)
 
 
 	// Motor queue creation
-	//motors_queue = xQueueCreate(10, sizeof());
+	motors_queue = xQueueCreate(10, sizeof(Attitude_Joystick_Data_t));
 
 
     // Variables
