@@ -73,6 +73,13 @@ typedef struct
 	float ePidYaw;
 } AttitudeData_t;
 
+// Structure for joystick data
+typedef struct
+{
+	DataSource_t eDataSource;
+	uint8_t joystick;
+	uint8_t throttle;
+} JoystickData_t;
 
 
 
