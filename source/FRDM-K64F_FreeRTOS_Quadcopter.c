@@ -72,6 +72,10 @@ int main(void)
   	// Initialization of FSL debug console.
     BOARD_InitDebugConsole();
 
+    // FTM0 module initialization
+	FTM0_init(FTM_MODULE);
+	PRINTF("FTM0 module initialized!!\r\n");
+
     // Variables
     BaseType_t pass_or_nopass;
 
