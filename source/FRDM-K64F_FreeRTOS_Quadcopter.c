@@ -91,8 +91,6 @@ typedef struct
 static QueueHandle_t motors_queue = NULL;
 
 
-
-
 /*********************************************************************
  * @brief   Main function
  ********************************************************************/
@@ -114,6 +112,10 @@ int main(void)
 	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
 	GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
 	GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
+
+
+	// Motor queue creation
+	//motors_queue = xQueueCreate(10, sizeof());
 
 
     // Variables
