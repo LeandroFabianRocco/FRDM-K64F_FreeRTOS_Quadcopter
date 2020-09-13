@@ -53,6 +53,22 @@
 #include "SensorData_Tasks.h"
 #include "MotorControl_Tasks.h"
 
+
+/*********************************************************************
+ * Structures and enumerations
+ ********************************************************************/
+// Enumeration to know the source of data send it to MotorControl_Task
+typedef enum
+{
+	AttitudeData,
+	JoystickData
+} DataSource_t;
+
+
+
+
+
+
 /*********************************************************************
  * Prototypes
  ********************************************************************/
