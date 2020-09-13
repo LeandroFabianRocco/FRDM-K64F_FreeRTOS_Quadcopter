@@ -19,6 +19,7 @@
 #include "stdint.h"
 #include "pin_mux.h"
 #include "fsl_gpio.h"
+#include "queue.h"
 
 
 /*************************************************************************

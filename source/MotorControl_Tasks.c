@@ -107,6 +107,8 @@ void ControllingMotors_task(void *pvParameters)
 {
 	const TickType_t xDelay500ms = pdMS_TO_TICKS(2000);
 
+	extern QueueHandle_t motors_queue;
+
 	uint8_t counter = 0;
     for (;;)
     {
@@ -125,6 +127,8 @@ void ControllingMotors_task(void *pvParameters)
 		if (counter > 100)
 			counter = 0;
     	vTaskDelay(xDelay500ms);
+
+
     }
 }
 
