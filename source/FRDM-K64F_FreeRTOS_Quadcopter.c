@@ -76,6 +76,12 @@ int main(void)
 	FTM0_init(FTM_MODULE);
 	PRINTF("FTM0 module initialized!!\r\n");
 
+
+	// WHO_AM_I from MPU6050 received?
+
+
+
+
     // Variables
     BaseType_t pass_or_nopass;
 
@@ -144,9 +150,16 @@ int main(void)
 static void vRedLEDToggleTask(void *pvParameters)
 {
 	const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
+
+	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+	GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+	GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
+
 	for (;;)
 	{
-		GPIO_PortToggle(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		//GPIO_PortToggle(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		//GPIO_PortToggle(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+		GPIO_PortToggle(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
 		vTaskDelay(xDelay250ms);
 	}
 }

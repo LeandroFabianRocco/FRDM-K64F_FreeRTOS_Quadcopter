@@ -110,6 +110,11 @@ void ControllingMotors_task(void *pvParameters)
 	uint8_t counter = 0;
     for (;;)
     {
+    	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+		GPIO_PortClear(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
+		PRINTF("---> Motors_Task!!\r\n");
+
     	float x1 = throttle2CnV(counter);
     	set_pwm_CnV(FTM_MODULE, x1, PWM_CH0);
     	set_pwm_CnV(FTM_MODULE, x1, PWM_CH1);

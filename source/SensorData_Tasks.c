@@ -54,6 +54,11 @@ void SensorData_task(void *pvParameters)
 	float xyz_accel[3];
     for (;;)
     {
+    	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		GPIO_PortClear(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+		GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
+		PRINTF("---> SensorData_Task!!\r\n");
+
     	//MPU6050_Read_Accel_Data(&master_rtos_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
     	MPU6050_GetgAcceleration(&master_rtos_handle, xyz_accel);
     	PRINTF("%1.3f, %1.3f, %1.3f\r\n", xyz_accel[0], xyz_accel[1], xyz_accel[2]);

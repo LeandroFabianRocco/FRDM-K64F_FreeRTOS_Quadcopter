@@ -106,6 +106,10 @@ void UART_Rx_Task(void *pvParameters)
     }
     for (;;)
     {
+    	GPIO_PortClear(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+		GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+		GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
+		PRINTF("---> UART_Task!!\r\n");
 		do
 		{
 			error = UART_RTOS_Receive(&handle, recv_buffer, sizeof(recv_buffer), &n);
