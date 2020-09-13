@@ -43,7 +43,7 @@ pin_labels:
 - {pin_num: '18', pin_signal: ADC0_DP0/ADC1_DP3, label: 'J2[5]'}
 - {pin_num: '19', pin_signal: ADC0_DM0/ADC1_DM3, label: 'J2[7]'}
 - {pin_num: '20', pin_signal: ADC1_DP0/ADC0_DP3, label: 'J2[11]'}
-- {pin_num: '33', pin_signal: PTE26/ENET_1588_CLKIN/UART4_CTS_b/RTC_CLKOUT/USB_CLKIN, label: 'J2[1]/D12[4]/LEDRGB_GREEN', identifier: LED_GREEN}
+- {pin_num: '33', pin_signal: PTE26/ENET_1588_CLKIN/UART4_CTS_b/RTC_CLKOUT/USB_CLKIN, label: 'J2[1]/D12[4]/LEDRGB_GREEN', identifier: LED_GREEN;GREEN_LED}
 - {pin_num: '27', pin_signal: DAC0_OUT/CMP1_IN3/ADC0_SE23, label: 'J4[11]', identifier: DAC0_OUT}
 - {pin_num: '66', pin_signal: PTB20/SPI2_PCS0/FB_AD31/CMP0_OUT, label: 'J6[3]/J4[9]/RF_WIFI_CE', identifier: RF_WIFI_CE}
 - {pin_num: '17', pin_signal: ADC1_DM1, label: 'J4[7]'}
@@ -86,7 +86,7 @@ pin_labels:
 - {pin_num: '37', pin_signal: PTA3/UART0_RTS_b/FTM0_CH0/JTAG_TMS/SWD_DIO, label: 'J9[2]/SWD_DIO'}
 - {pin_num: '34', pin_signal: PTA0/UART0_CTS_b/UART0_COL_b/FTM0_CH5/JTAG_TCLK/SWD_CLK/EZP_CLK, label: 'J9[4]/SWD_CLK'}
 - {pin_num: '68', pin_signal: PTB22/SPI2_SOUT/FB_AD29/CMP2_OUT, label: 'D12[1]/LEDRGB_RED', identifier: LED_RED;RED_LED}
-- {pin_num: '67', pin_signal: PTB21/SPI2_SCK/FB_AD30/CMP1_OUT, label: 'D12[3]/LEDRGB_BLUE', identifier: LED_BLUE}
+- {pin_num: '67', pin_signal: PTB21/SPI2_SCK/FB_AD30/CMP1_OUT, label: 'D12[3]/LEDRGB_BLUE', identifier: LED_BLUE;BLUE_LED}
 - {pin_num: '13', pin_signal: VREGIN, label: VREGIN_K64}
 - {pin_num: '29', pin_signal: EXTAL32, label: 'Y3[2]/EXTAL32_RTC', identifier: ETAL32K}
 - {pin_num: '28', pin_signal: XTAL32, label: 'Y3[1]/XTAL32_RTC', identifier: XTAL32K}
@@ -151,6 +151,8 @@ BOARD_InitPins:
   - {pin_num: '72', peripheral: FTM0, signal: 'CH, 1', pin_signal: ADC0_SE4b/CMP1_IN0/PTC2/SPI0_PCS2/UART1_CTS_b/FTM0_CH1/FB_AD12/I2S0_TX_FS}
   - {pin_num: '77', peripheral: FTM0, signal: 'CH, 2', pin_signal: PTC5/LLWU_P9/SPI0_SCK/LPTMR0_ALT2/I2S0_RXD0/FB_AD10/CMP0_OUT/FTM0_CH2}
   - {pin_num: '76', peripheral: FTM0, signal: 'CH, 3', pin_signal: PTC4/LLWU_P8/SPI0_PCS0/UART1_TX/FTM0_CH3/FB_AD11/CMP1_OUT}
+  - {pin_num: '33', peripheral: GPIOE, signal: 'GPIO, 26', pin_signal: PTE26/ENET_1588_CLKIN/UART4_CTS_b/RTC_CLKOUT/USB_CLKIN, identifier: GREEN_LED}
+  - {pin_num: '67', peripheral: GPIOB, signal: 'GPIO, 21', pin_signal: PTB21/SPI2_SCK/FB_AD30/CMP1_OUT, identifier: BLUE_LED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -169,6 +171,8 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortB);
     /* Port C Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortC);
+    /* Port E Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortE);
 
     gpio_pin_config_t RED_LED_config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -194,6 +198,9 @@ void BOARD_InitPins(void)
                      /* Drive Strength Enable: Low drive strength is configured on the corresponding pin, if pin
                       * is configured as a digital output. */
                      | PORT_PCR_DSE(kPORT_LowDriveStrength));
+
+    /* PORTB21 (pin 67) is configured as PTB21 */
+    PORT_SetPinMux(BOARD_BLUE_LED_PORT, BOARD_BLUE_LED_PIN, kPORT_MuxAsGpio);
 
     /* PORTB22 (pin 68) is configured as PTB22 */
     PORT_SetPinMux(BOARD_RED_LED_PORT, BOARD_RED_LED_PIN, kPORT_MuxAsGpio);
@@ -221,6 +228,9 @@ void BOARD_InitPins(void)
 
     /* PORTC5 (pin 77) is configured as FTM0_CH2 */
     PORT_SetPinMux(PORTC, 5U, kPORT_MuxAlt7);
+
+    /* PORTE26 (pin 33) is configured as PTE26 */
+    PORT_SetPinMux(BOARD_GREEN_LED_PORT, BOARD_GREEN_LED_PIN, kPORT_MuxAsGpio);
 }
 
 /* clang-format off */
@@ -312,12 +322,12 @@ void BOARD_InitButtonsPins(void)
 BOARD_InitLEDsPins:
 - options: {prefix: BOARD_, coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '67', peripheral: GPIOB, signal: 'GPIO, 21', pin_signal: PTB21/SPI2_SCK/FB_AD30/CMP1_OUT, direction: OUTPUT, gpio_init_state: 'true', slew_rate: slow,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable}
+  - {pin_num: '67', peripheral: GPIOB, signal: 'GPIO, 21', pin_signal: PTB21/SPI2_SCK/FB_AD30/CMP1_OUT, identifier: LED_BLUE, direction: OUTPUT, gpio_init_state: 'true',
+    slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable}
   - {pin_num: '68', peripheral: GPIOB, signal: 'GPIO, 22', pin_signal: PTB22/SPI2_SOUT/FB_AD29/CMP2_OUT, identifier: LED_RED, direction: OUTPUT, gpio_init_state: 'true',
     slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable}
-  - {pin_num: '33', peripheral: GPIOE, signal: 'GPIO, 26', pin_signal: PTE26/ENET_1588_CLKIN/UART4_CTS_b/RTC_CLKOUT/USB_CLKIN, direction: OUTPUT, gpio_init_state: 'true',
-    slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable}
+  - {pin_num: '33', peripheral: GPIOE, signal: 'GPIO, 26', pin_signal: PTE26/ENET_1588_CLKIN/UART4_CTS_b/RTC_CLKOUT/USB_CLKIN, identifier: LED_GREEN, direction: OUTPUT,
+    gpio_init_state: 'true', slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
