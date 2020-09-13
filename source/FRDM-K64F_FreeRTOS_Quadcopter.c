@@ -77,9 +77,10 @@ int main(void)
 	PRINTF("FTM0 module initialized!!\r\n");
 
 
-	// WHO_AM_I from MPU6050 received?
-
-
+	// LEDs initialization
+	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
+	GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
+	GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
 
 
     // Variables
@@ -88,19 +89,6 @@ int main(void)
     /*********************************************
     * Task creation goes here
     *********************************************/
-    // Task for toggle RED LED
-    pass_or_nopass = xTaskCreate(vRedLEDToggleTask,
-    		"RED_LED Toggle",
-			configMINIMAL_STACK_SIZE,
-			NULL,
-			configMAX_PRIORITIES - 1,
-			NULL);
-    if (pass_or_nopass != pdPASS)
-    {
-		PRINTF("vRedLEDToggleTask creation failed!.\r\n");
-		while (1);
-    }
-
     // Task for UART4 module
     NVIC_SetPriority(UART_RX_TX_IRQn, 5);
     pass_or_nopass = xTaskCreate(UART_Rx_Task,
@@ -143,23 +131,3 @@ int main(void)
     return 0 ;
 }
 
-
-/*********************************************************************
- * Red LED task
- ********************************************************************/
-static void vRedLEDToggleTask(void *pvParameters)
-{
-	const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
-
-	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
-	GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
-	GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
-
-	for (;;)
-	{
-		//GPIO_PortToggle(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
-		//GPIO_PortToggle(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
-		GPIO_PortToggle(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
-		vTaskDelay(xDelay250ms);
-	}
-}

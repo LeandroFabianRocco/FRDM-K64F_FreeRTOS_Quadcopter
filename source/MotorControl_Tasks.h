@@ -17,6 +17,8 @@
 #include "stdint.h"
 #include "fsl_debug_console.h"
 #include "stdint.h"
+#include "pin_mux.h"
+#include "fsl_gpio.h"
 
 
 /*************************************************************************
