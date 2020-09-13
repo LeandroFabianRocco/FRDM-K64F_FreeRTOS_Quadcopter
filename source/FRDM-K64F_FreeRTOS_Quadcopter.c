@@ -57,29 +57,31 @@
 /*********************************************************************
  * Structures and enumerations
  ********************************************************************/
-// Enumeration to know the source of data send it to MotorControl_Task
+// Enumeration for data valid
 typedef enum
 {
-	AttitudeData,
-	JoystickData
-} DataSource_t;
+	TRUE,
+	FALSE
+} DataValid_t;
 
-// Structure for attitude data
+// Structure for attitude and joystick data
 typedef struct
 {
-	DataSource_t eDataSource;
 	float ePidPITCH;
-	float ePidRoll;
-	float ePidYaw;
-} AttitudeData_t;
+	DataValid_t evPitch;
 
-// Structure for joystick data
-typedef struct
-{
-	DataSource_t eDataSource;
-	uint8_t joystick;
-	uint8_t throttle;
-} JoystickData_t;
+	float ePidRoll;
+	DataValid_t evRoll;
+
+	float ePidYaw;
+	DataValid_t evYaw;
+
+	uint8_t eJoystick;
+	DataValid_t evJoystick;
+
+	uint8_t eThrottle;
+	DataValid_t evThrottle;
+} AttitudeData_t;
 
 
 
