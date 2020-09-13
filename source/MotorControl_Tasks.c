@@ -105,10 +105,6 @@ float throttle2CnV(uint8_t throttle)
  *********************************************************************************************/
 void ControllingMotors_task(void *pvParameters)
 {
-	// FTM0 module initialization
-	FTM0_init(FTM_MODULE);
-	PRINTF("FTM0 module initialized!!\r\n");
-
 	const TickType_t xDelay500ms = pdMS_TO_TICKS(2000);
 
 	uint8_t counter = 0;
