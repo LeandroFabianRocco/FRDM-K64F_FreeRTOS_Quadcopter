@@ -64,6 +64,14 @@ typedef enum
 	JoystickData
 } DataSource_t;
 
+// Structure for attitude data
+typedef struct
+{
+	DataSource_t eDataSource;
+	float ePidPITCH;
+	float ePidRoll;
+	float ePidYaw;
+} AttitudeData_t;
 
 
 
