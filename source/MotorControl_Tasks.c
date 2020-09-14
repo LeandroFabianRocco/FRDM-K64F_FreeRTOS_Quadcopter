@@ -105,11 +105,10 @@ float throttle2CnV(uint8_t throttle)
  *********************************************************************************************/
 void ControllingMotors_task(void *pvParameters)
 {
-	const TickType_t xDelay500ms = pdMS_TO_TICKS(2000);
-
 	extern QueueHandle_t motors_queue;
 
-	uint8_t counter = 0;
+	extern struct Attitude_Joystick_Data_t motor_data;
+
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -117,17 +116,11 @@ void ControllingMotors_task(void *pvParameters)
 		GPIO_PortClear(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
 		PRINTF("---> Motors_Task!!\r\n");
 
-    	float x1 = throttle2CnV(counter);
-    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH0);
-    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH1);
-    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH2);
-    	set_pwm_CnV(FTM_MODULE, x1, PWM_CH3);
-    	PRINTF("Contador = %3.2f!!\r\n", x1);
-    	counter += 1;
-		if (counter > 100)
-			counter = 0;
-    	vTaskDelay(xDelay500ms);
 
+		if (xQueueReceive(motors_queue, motor_data, portMAX_DELAY) != pdTRUE)
+		{
+			PRINTF("Failed to receive queue.\r\n");
+		}
 
     }
 }
