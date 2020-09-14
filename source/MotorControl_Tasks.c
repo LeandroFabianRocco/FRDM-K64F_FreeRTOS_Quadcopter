@@ -10,6 +10,9 @@
 
 
 
+extern QueueHandle_t motors_queue;
+
+
 /*********************************************************************************************
  * @brief Set the CnV field for PWM channels
  *
@@ -105,9 +108,9 @@ float throttle2CnV(uint8_t throttle)
  *********************************************************************************************/
 void ControllingMotors_task(void *pvParameters)
 {
-	extern QueueHandle_t motors_queue;
 
-	extern struct Attitude_Joystick_Data_t motor_data;
+
+	//Attitude_Joystick_Data_t motor_data;
 
     for (;;)
     {
@@ -117,7 +120,7 @@ void ControllingMotors_task(void *pvParameters)
 		PRINTF("---> Motors_Task!!\r\n");
 
 
-		if (xQueueReceive(motors_queue, motor_data, portMAX_DELAY) != pdTRUE)
+		if (xQueueReceive(motors_queue, &motor_data, portMAX_DELAY) != pdTRUE)
 		{
 			PRINTF("Failed to receive queue.\r\n");
 		}

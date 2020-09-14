@@ -21,6 +21,8 @@
 #include "fsl_gpio.h"
 #include "queue.h"
 
+#include "structs.h"
+
 
 /*************************************************************************
  * Definitions
