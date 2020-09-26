@@ -38,7 +38,7 @@ typedef struct
 } Attitude_Joystick_Data_t;
 
 
-
+// Handle to update motors
 extern QueueHandle_t motors_queue = NULL;
 
 
