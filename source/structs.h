@@ -39,4 +39,7 @@ typedef struct
 
 
 
+extern QueueHandle_t motors_queue = NULL;
+
+
 #endif /* STRUCTS_H_ */
