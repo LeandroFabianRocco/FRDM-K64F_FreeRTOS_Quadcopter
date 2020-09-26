@@ -139,12 +139,12 @@ void ControllingMotors_task(void *pvParameters)
 
 		if (motor_data.evJoystick == TRUE)
 		{
-
+			PRINTF("Joystick = %d\r\n", motor_data.eJoystick);
 		}
 
 		if (motor_data.evThrottle == TRUE)
 		{
-
+			PRINTF("Throttle = %d\r\n", motor_data.eThrottle);
 		}
     }
 }
