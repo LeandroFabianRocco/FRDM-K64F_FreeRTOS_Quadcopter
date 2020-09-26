@@ -8,6 +8,12 @@
 #ifndef STRUCTS_H_
 #define STRUCTS_H_
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+#include "semphr.h"
+
 /*********************************************************************
  * Structures and enumerations
  ********************************************************************/
@@ -38,8 +44,8 @@ typedef struct
 } Attitude_Joystick_Data_t;
 
 
-// Handle to update motors
-extern QueueHandle_t motors_queue = NULL;
+// Declaration of handle to update motors
+extern QueueHandle_t motors_queue;
 
 
 #endif /* STRUCTS_H_ */

@@ -63,8 +63,8 @@
 /*******************************************************************************
  * Globals
  ******************************************************************************/
-// Handle to update motors
-static QueueHandle_t motors_queue = NULL;
+// Definition of handle to update motors
+QueueHandle_t motors_queue = NULL;
 
 
 /*********************************************************************

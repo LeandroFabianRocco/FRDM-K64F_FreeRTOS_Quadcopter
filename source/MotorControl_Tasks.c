@@ -10,9 +10,6 @@
 
 
 
-extern QueueHandle_t motors_queue;
-
-
 /*********************************************************************************************
  * @brief Set the CnV field for PWM channels
  *
@@ -110,7 +107,7 @@ void ControllingMotors_task(void *pvParameters)
 {
 
 
-	//Attitude_Joystick_Data_t motor_data;
+	Attitude_Joystick_Data_t motor_data;
 
     for (;;)
     {
