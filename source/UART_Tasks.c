@@ -106,11 +106,14 @@ void UART_Rx_Task(void *pvParameters)
 
     // Motors data
     Attitude_Joystick_Data_t motor_data;
-    motor_data.evPitch = false;
-	motor_data.evRoll = false;
-	motor_data.evYaw = false;
-	motor_data.evJoystick = true;
-	motor_data.evThrottle = true;
+    motor_data.evPitch = FALSE;
+	motor_data.evRoll = FALSE;
+	motor_data.evYaw = FALSE;
+	motor_data.evJoystick = TRUE;
+	motor_data.evThrottle = TRUE;
+
+	motor_data.eThrottle = 0;
+	motor_data.eJoystick = 0;
 
     for (;;)
     {
@@ -143,7 +146,7 @@ void UART_Rx_Task(void *pvParameters)
 						motor_data.eJoystick = recv_buffer[1];
 					}
 				}
-				PRINTF("j = 0x%x; t = %3d\r\n", motor_data.eJoystick, motor_data.eThrottle);
+				//PRINTF("j = 0x%x; t = %3d\r\n", motor_data.eJoystick, motor_data.eThrottle);
 				// Send data to queue
 				xQueueSend(motors_queue, &motor_data, 0);
 			}
