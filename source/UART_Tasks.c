@@ -88,9 +88,8 @@ uint8_t Compute_CRC8(uint8_t *data, uint8_t size)
 void UART_Rx_Task(void *pvParameters)
 {
     int error;
-    int i;
+    //int i;
     size_t n = 0;
-    uint8_t joystick, throttle;
 
     uint8_t rest;
 
@@ -104,6 +103,15 @@ void UART_Rx_Task(void *pvParameters)
     {
         vTaskSuspend(NULL);
     }
+
+    // Motors data
+    Attitude_Joystick_Data_t motor_data;
+    motor_data.evPitch = false;
+	motor_data.evRoll = false;
+	motor_data.evYaw = false;
+	motor_data.evJoystick = true;
+	motor_data.evThrottle = true;
+
     for (;;)
     {
     	GPIO_PortClear(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -128,14 +136,16 @@ void UART_Rx_Task(void *pvParameters)
 				{
 					if (recv_buffer[0] == 0x2A)
 					{
-						throttle = recv_buffer[1];
+						motor_data.eThrottle = recv_buffer[1];
 					}
 					else if (recv_buffer[0] == 0x23)
 					{
-						joystick = recv_buffer[1];
+						motor_data.eJoystick = recv_buffer[1];
 					}
 				}
-				PRINTF("j = 0x%x; t = %3d\r\n", joystick, throttle);
+				PRINTF("j = 0x%x; t = %3d\r\n", motor_data.eJoystick, motor_data.eThrottle);
+				// Send data to queue
+				xQueueSend(motors_queue, &motor_data, 0);
 			}
 		} while (kStatus_Success == error);
     }

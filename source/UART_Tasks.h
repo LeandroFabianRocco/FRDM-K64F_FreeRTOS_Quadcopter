@@ -14,6 +14,8 @@
 #include "pin_mux.h"
 #include "fsl_gpio.h"
 
+#include "structs.h"
+
 
 /*******************************************************************************
  * Definitions
