@@ -122,6 +122,30 @@ void ControllingMotors_task(void *pvParameters)
 			PRINTF("Failed to receive queue.\r\n");
 		}
 
+		if (motor_data.evPitch == TRUE)
+		{
+
+		}
+
+		if (motor_data.evRoll == TRUE)
+		{
+
+		}
+
+		if (motor_data.evYaw == TRUE)
+		{
+
+		}
+
+		if (motor_data.evJoystick == TRUE)
+		{
+
+		}
+
+		if (motor_data.evThrottle == TRUE)
+		{
+
+		}
     }
 }
 
