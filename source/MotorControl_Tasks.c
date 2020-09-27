@@ -111,8 +111,8 @@ void ControllingMotors_task(void *pvParameters)
 
 	// Variables to controlling the BLDC motors
 	volatile float Mfront, Mfront_last;	// Front motor
-	volatile float Mleft, Mleft_last;		// Left motor
-	volatile float Mback, Mback_last;		// Back motor
+	volatile float Mleft, Mleft_last;	// Left motor
+	volatile float Mback, Mback_last;	// Back motor
 	volatile float Mright, Mright_last;	// Right motor
 
 	uint8_t throttle = 0;
