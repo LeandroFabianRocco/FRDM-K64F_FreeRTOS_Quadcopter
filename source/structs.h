@@ -37,11 +37,29 @@ typedef struct
 	DataValid_t evYaw;
 
 	uint8_t eJoystick;
-	DataValid_t evJoystick;
-
 	uint8_t eThrottle;
-	DataValid_t evThrottle;
+	DataValid_t evJandT;
 } Attitude_Joystick_Data_t;
+
+/*******************************************************************************
+ * Pitch and Roll structures definition
+ ******************************************************************************/
+struct pitchStruct{
+	float reference;
+	float angle;
+	float last_iError;
+	float last_pError;
+	float dt;
+};
+
+
+struct rollStruct{
+	float reference;
+	float angle;
+	float last_iError;
+	float last_pError;
+	float dt;
+};
 
 
 // Declaration of handle to update motors
