@@ -132,36 +132,38 @@ void ControllingMotors_task(void *pvParameters)
 			PRINTF("Failed to receive queue.\r\n");
 		}
 
+
+		// Pitch, Roll and Yaw PID signals
 		if (motor_data.evPitch == TRUE)
-		{
 			pitch = motor_data.ePidPitch;
-		}
-
 		if (motor_data.evRoll == TRUE)
-		{
 			roll = motor_data.ePidRoll;
-		}
-
 		if (motor_data.evYaw == TRUE)
-		{
 			yaw = motor_data.ePidYaw;
-		}
 
-		if (motor_data.evJoystick == TRUE)
+
+		if (motor_data.evJandT == TRUE)
 		{
 			joystick = motor_data.eJoystick;
-		}
-
-		if (motor_data.evThrottle == TRUE)
-		{
 			throttle = motor_data.eThrottle;
+			if (joystick == 0)
+			{
+				Mfront = throttle + pitch - yaw;
+				Mback = throttle - pitch - yaw;
+				Mleft = throttle - roll + yaw;
+				Mright = throttle + roll + yaw;
+			}
+			else
+			{
+				// I must act on motors to move quadcopter
+				/*Mfront = 0;
+				Mback = 0;
+				Mleft = 0;
+				Mright = 0;*/
+			}
 		}
 
-		// Front motor
-		Mfront = throttle + pitch - yaw;
-		Mback = throttle - pitch - yaw;
-		Mleft = throttle - roll + yaw;
-		Mright = throttle + roll + yaw;
+
 
 		PRINTF("Mfront = %f, Mback = %f, Mleft = %f, Mright = %f\r\n", Mfront, Mback, Mleft, Mright);
 
