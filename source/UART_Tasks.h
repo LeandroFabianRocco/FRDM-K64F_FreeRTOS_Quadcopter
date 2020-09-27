@@ -26,7 +26,7 @@
 #define UART_CLK_FREQ CLOCK_GetFreq(UART4_CLK_SRC)
 #define UART_RX_TX_IRQn UART4_RX_TX_IRQn
 
-// Generator polinomial for CRC-8 code
+// Generator polynomial for CRC-8 code
 #define GENERATOR 0x1D
 
 

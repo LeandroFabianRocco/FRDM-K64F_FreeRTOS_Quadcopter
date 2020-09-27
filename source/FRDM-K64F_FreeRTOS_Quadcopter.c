@@ -101,7 +101,7 @@ int main(void)
     * Task creation goes here
     *********************************************/
     // Task for UART4 module
-    NVIC_SetPriority(UART_RX_TX_IRQn, 5);
+    NVIC_SetPriority(UART_RX_TX_IRQn, 2);
     pass_or_nopass = xTaskCreate(UART_Rx_Task,
     		"UART4 Task",
 			configMINIMAL_STACK_SIZE + 100,
@@ -115,12 +115,12 @@ int main(void)
     }
 
     // Task to acquire Accel/Gyro/Magnet data from sensors
-    NVIC_SetPriority(I2C1_IRQN, 3);
+    NVIC_SetPriority(I2C1_IRQN, 5);
     pass_or_nopass = xTaskCreate(SensorData_task,
     		"Sensors Task",
 			configMINIMAL_STACK_SIZE + 100,
 			NULL,
-			configMAX_PRIORITIES - 1,
+			configMAX_PRIORITIES - 2,
 			NULL);
 
     // Task to control change motors throttle

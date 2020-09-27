@@ -114,6 +114,9 @@ void UART_Rx_Task(void *pvParameters)
 
 	motor_data.eThrottle = 0;
 	motor_data.eJoystick = 0;
+	motor_data.ePidPitch = 0;
+	motor_data.ePidRoll = 0;
+	motor_data.ePidYaw = 0;
 
     for (;;)
     {

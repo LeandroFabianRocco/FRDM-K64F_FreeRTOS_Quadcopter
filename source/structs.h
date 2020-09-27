@@ -27,7 +27,7 @@ typedef enum
 // Structure for attitude and joystick data
 typedef struct
 {
-	float ePidPITCH;
+	float ePidPitch;
 	DataValid_t evPitch;
 
 	float ePidRoll;

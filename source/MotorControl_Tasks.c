@@ -109,6 +109,16 @@ void ControllingMotors_task(void *pvParameters)
 
 	Attitude_Joystick_Data_t motor_data;
 
+	// Variables to controlling the BLDC motors
+	volatile float Mfront, Mfront_last;	// Front motor
+	volatile float Mleft, Mleft_last;		// Left motor
+	volatile float Mback, Mback_last;		// Back motor
+	volatile float Mright, Mright_last;	// Right motor
+
+	uint8_t throttle = 0;
+	uint8_t joystick = 0;
+	float pitch = 0.0, roll = 0.0, yaw = 0.0;
+
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -124,27 +134,59 @@ void ControllingMotors_task(void *pvParameters)
 
 		if (motor_data.evPitch == TRUE)
 		{
-
+			pitch = motor_data.ePidPitch;
 		}
 
 		if (motor_data.evRoll == TRUE)
 		{
-
+			roll = motor_data.ePidRoll;
 		}
 
 		if (motor_data.evYaw == TRUE)
 		{
-
+			yaw = motor_data.ePidYaw;
 		}
 
 		if (motor_data.evJoystick == TRUE)
 		{
-			PRINTF("Joystick = %d\r\n", motor_data.eJoystick);
+			joystick = motor_data.eJoystick;
 		}
 
 		if (motor_data.evThrottle == TRUE)
 		{
-			PRINTF("Throttle = %d\r\n", motor_data.eThrottle);
+			throttle = motor_data.eThrottle;
+		}
+
+		// Front motor
+		Mfront = throttle + pitch - yaw;
+		Mback = throttle - pitch - yaw;
+		Mleft = throttle - roll + yaw;
+		Mright = throttle + roll + yaw;
+
+		PRINTF("Mfront = %f, Mback = %f, Mleft = %f, Mright = %f\r\n", Mfront, Mback, Mleft, Mright);
+
+		if (Mfront_last != Mfront)
+		{
+			set_pwm_CnV(FTM0, Mfront, PWM_CH0);
+			Mfront_last = Mfront;
+		}
+
+		if (Mback_last != Mback)
+		{
+			set_pwm_CnV(FTM0, Mback, PWM_CH2);
+			Mback_last = Mback;
+		}
+
+		if (Mleft_last != Mleft)
+		{
+			set_pwm_CnV(FTM0, Mleft, PWM_CH1);
+			Mleft_last = Mleft;
+		}
+
+		if (Mright_last != Mright)
+		{
+			set_pwm_CnV(FTM0, Mright, PWM_CH3);
+			Mright_last = Mright;
 		}
     }
 }
