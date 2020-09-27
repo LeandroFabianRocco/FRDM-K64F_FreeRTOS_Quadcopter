@@ -8,6 +8,9 @@
 #ifndef PIDCONTROLLER_H_
 #define PIDCONTROLLER_H_
 
+
+#include "structs.h"
+
 /*************************************************************************
  * Definitions
  ************************************************************************/
@@ -22,26 +25,6 @@
 #define KI_ROLL		0.0
 #define KD_ROLL		0.0
 
-
-/*******************************************************************************
- * Pitch and Roll structures definition
- ******************************************************************************/
-struct pitchStruct{
-	float reference;
-	float angle;
-	float last_iError;
-	float last_pError;
-	float dt;
-};
-
-
-struct rollStruct{
-	float reference;
-	float angle;
-	float last_iError;
-	float last_pError;
-	float dt;
-};
 
 
 /*********************************************************************************************
