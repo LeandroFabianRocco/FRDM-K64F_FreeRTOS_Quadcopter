@@ -109,8 +109,7 @@ void UART_Rx_Task(void *pvParameters)
     motor_data.evPitch = FALSE;
 	motor_data.evRoll = FALSE;
 	motor_data.evYaw = FALSE;
-	motor_data.evJoystick = TRUE;
-	motor_data.evThrottle = TRUE;
+	motor_data.evJandT = TRUE;
 
 	motor_data.eThrottle = 0;
 	motor_data.eJoystick = 0;
