@@ -179,4 +179,27 @@ void MPU6050_Read_Accel_Data(i2c_rtos_handle_t *master_handle, uint8_t device_ad
  *********************************************************************************************/
 void MPU6050_GetgAcceleration(i2c_rtos_handle_t *master_handle, float *accel);
 
+
+/*********************************************************************************************
+ * @brief Get the angular velocity from Gyro
+ *
+ * @param I2C master handle
+ * @param pointer to angular velocity vector -- xyz values
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_GetAngularVelocity(i2c_rtos_handle_t *master_handle, float *omega);
+
+/*********************************************************************************************
+ * @brief Read gyroscope data
+ *
+ * @param I2C master handle
+ * @param sensor device address
+ * @param XYZ readings
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_Read_Gyro_Data(i2c_rtos_handle_t *master_handle, uint8_t device_addr, int16_t *xyz_gyro);
+
+
 #endif /* MPU6050_H_ */
