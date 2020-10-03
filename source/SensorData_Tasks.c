@@ -51,7 +51,8 @@ void SensorData_task(void *pvParameters)
 	else
 		PRINTF("No device found!!\r\n");
 
-	float xyz_accel[3];
+	float xyz_gravity[3];
+	float xyz_omega[3];
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -59,9 +60,13 @@ void SensorData_task(void *pvParameters)
 		GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
 		PRINTF("---> SensorData_Task!!\r\n");
 
-    	//MPU6050_Read_Accel_Data(&master_rtos_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
-    	MPU6050_GetgAcceleration(&master_rtos_handle, xyz_accel);
-    	//PRINTF("%1.3f, %1.3f, %1.3f\r\n", xyz_accel[0], xyz_accel[1], xyz_accel[2]);
+    	MPU6050_GetgAcceleration(&master_rtos_handle, xyz_gravity);
+    	MPU6050_GetAngularVelocity(&master_rtos_handle, xyz_omega);
+
+    	PRINTF("Gxyz = [%.3f, %.3f, %.3f]; Wxyz = [%.3f, %.3f, %.3f]\r\n",
+    			xyz_gravity[0], xyz_gravity[1], xyz_gravity[2],
+				xyz_omega[0], xyz_omega[1], xyz_omega[2]);
+
 
     	vTaskDelay(xDelay250ms);
     }
