@@ -44,7 +44,7 @@ void SensorData_task(void *pvParameters)
 
 
     PRINTF("I2C1 module initialized!\r\n");
-    const TickType_t xDelay1ms = pdMS_TO_TICKS(1);
+    const TickType_t looptime = pdMS_TO_TICKS(1);
     bool isOK;
     isOK = MPU6050_ReadSensorWhoAmI(&master_rtos_handle);
 	if (isOK)
@@ -52,8 +52,6 @@ void SensorData_task(void *pvParameters)
 	else
 		PRINTF("No device found!!\r\n");
 
-	float xyz_gravity[3];
-	float xyz_omega[3];
 
 	// Pitch structure initialization
 	struct pitchStruct pitchData;
@@ -61,7 +59,7 @@ void SensorData_task(void *pvParameters)
 	pitchData.angle = 0;
 	pitchData.last_iError = 0;
 	pitchData.last_pError = 0;
-	pitchData.dt = 0;
+	pitchData.dt = DT;
 
 	// Roll structure initialization
 	struct rollStruct rollData;
@@ -69,14 +67,14 @@ void SensorData_task(void *pvParameters)
 	rollData.angle = 0;
 	rollData.last_iError = 0;
 	rollData.last_pError = 0;
-	rollData.dt = 0;
+	rollData.dt = DT;
 
 	// Angles struct
 	// MPU6050 angles structure
 	struct MPU6050_angles mpu_angles;
 	mpu_angles.x = 0;
 	mpu_angles.y = 0;
-	mpu_angles.dt = 0;
+	mpu_angles.dt = DT;
 
     for (;;)
     {
@@ -96,7 +94,7 @@ void SensorData_task(void *pvParameters)
 		PRINTF("X = %.3f; y = %.3f\r\n", mpu_angles.x, mpu_angles.y);
 
 
-    	vTaskDelay(xDelay1ms);
+    	vTaskDelay(looptime);
     }
 }
 
