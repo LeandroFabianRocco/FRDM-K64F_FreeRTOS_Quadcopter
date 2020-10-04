@@ -25,6 +25,7 @@
 #define KI_ROLL		0.0
 #define KD_ROLL		0.0
 
+// Loop time
 #define DT 0.001
 
 
