@@ -39,7 +39,7 @@ void SensorData_task(void *pvParameters)
     status = MPU6050_Configure_Device(&master_rtos_handle);
     if (status != true)
 	{
-		PRINTF("I2C master: error during configuration MPU6050 mmodule, %d", status);
+		PRINTF("I2C master: error during configuration MPU6050 module, %d", status);
 	}
 
 
@@ -69,40 +69,51 @@ void SensorData_task(void *pvParameters)
 	rollData.last_pError = 0;
 	rollData.dt = DT;
 
-	// Angles struct
 	// MPU6050 angles structure
 	struct MPU6050_angles mpu_angles;
 	mpu_angles.x = 0;
 	mpu_angles.y = 0;
 	mpu_angles.dt = DT;
 
-	float pitchPID = 0;
-	float rollPID = 0;
+
+	// Motors data
+	Attitude_Joystick_Data_t motor_data;
+	motor_data.evPitch = TRUE;
+	motor_data.evRoll = TRUE;
+	motor_data.evYaw = FALSE;
+	motor_data.evJandT = FALSE;
+
+	motor_data.eThrottle = 0;
+	motor_data.eJoystick = 0;
+	motor_data.ePidPitch = 0;
+	motor_data.ePidRoll = 0;
+	motor_data.ePidYaw = 0;
 
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
 		GPIO_PortClear(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
 		GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
-		PRINTF("---> SensorData_Task!!\r\n");
+		//PRINTF("---> SensorData_Task!!\r\n");
 
+		// Getting angles of Pitch and Roll
 		MPU6050_ComplementaryFilterAngles(&master_rtos_handle, &mpu_angles);
 		rollData.angle = mpu_angles.y;
 		pitchData.angle = mpu_angles.x;
 
-		pitchPID = getPitchPID(&pitchData);
-		rollPID = getRollPID(&rollData);
+		// Getting outputs from PID controllers
+		motor_data.ePidPitch = getPitchPID(&pitchData);
+		motor_data.ePidRoll = getRollPID(&rollData);
 
-    	//MPU6050_GetgAcceleration(&master_rtos_handle, xyz_gravity);
-    	//MPU6050_GetAngularVelocity(&master_rtos_handle, xyz_omega);
+		xQueueSend(motors_queue, &motor_data, 0);
 
-    	/*PRINTF("Gxyz = [%.3f, %.3f, %.3f]; Wxyz = [%.3f, %.3f, %.3f]\r\n",
-    			xyz_gravity[0], xyz_gravity[1], xyz_gravity[2],
-				xyz_omega[0], xyz_omega[1], xyz_omega[2]);*/
-		PRINTF("Roll = [%.3f, %.3f]; Pitch = [%.3f, %.3f]\r\n", mpu_angles.y,
-				rollPID,
+
+
+		/*PRINTF("Roll = [%.3f, %.3f]; Pitch = [%.3f, %.3f]\r\n",
 				mpu_angles.y,
-				pitchPID);
+				motor_data.ePidRoll,
+				mpu_angles.x,
+				motor_data.ePidPitch);*/
 
 
 		// Loop time delay

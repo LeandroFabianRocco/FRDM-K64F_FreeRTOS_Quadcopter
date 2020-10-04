@@ -124,7 +124,7 @@ void ControllingMotors_task(void *pvParameters)
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
 		GPIO_PortSet(BOARD_LED_GREEN_GPIO, 1u << BOARD_LED_GREEN_PIN);
 		GPIO_PortClear(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
-		PRINTF("---> Motors_Task!!\r\n");
+		//PRINTF("---> Motors_Task!!\r\n");
 
 
 		if (xQueueReceive(motors_queue, &motor_data, portMAX_DELAY) != pdTRUE)
@@ -133,7 +133,7 @@ void ControllingMotors_task(void *pvParameters)
 		}
 
 
-		// Pitch, Roll and Yaw PID signals
+		// Update pitch, roll and yaw PID signals
 		if (motor_data.evPitch == TRUE)
 			pitch = motor_data.ePidPitch;
 		if (motor_data.evRoll == TRUE)
@@ -141,31 +141,27 @@ void ControllingMotors_task(void *pvParameters)
 		if (motor_data.evYaw == TRUE)
 			yaw = motor_data.ePidYaw;
 
-
+		// Update joystick and throttle signals
 		if (motor_data.evJandT == TRUE)
 		{
 			joystick = motor_data.eJoystick;
 			throttle = motor_data.eThrottle;
-			if (joystick == 0)
-			{
-				Mfront = throttle + pitch - yaw;
-				Mback = throttle - pitch - yaw;
-				Mleft = throttle - roll + yaw;
-				Mright = throttle + roll + yaw;
-			}
-			else
-			{
-				// I must act on motors to move quadcopter
-				/*Mfront = 0;
-				Mback = 0;
-				Mleft = 0;
-				Mright = 0;*/
-			}
+			PRINTF("throttle = %d\r\n", throttle);
 		}
 
 
+		// Update motor signals
+		Mfront = throttle + pitch - yaw;
+		Mback = throttle - pitch - yaw;
+		Mleft = throttle - roll + yaw;
+		Mright = throttle + roll + yaw;
 
-		PRINTF("Mfront = %f, Mback = %f, Mleft = %f, Mright = %f\r\n", Mfront, Mback, Mleft, Mright);
+
+
+		PRINTF("[front, back, left, right] = [%.3f, %.3f, %.3f, %.3f]\r\n",
+				Mfront, Mback, Mleft, Mright);
+
+
 
 		if (Mfront_last != Mfront)
 		{

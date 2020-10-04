@@ -150,7 +150,13 @@ void UART_Rx_Task(void *pvParameters)
 				}
 				//PRINTF("j = 0x%x; t = %3d\r\n", motor_data.eJoystick, motor_data.eThrottle);
 				// Send data to queue
-				xQueueSend(motors_queue, &motor_data, 0);
+				//xQueueSend(motors_queue, &motor_data, 0);
+				if (xQueueSend(motors_queue, &motor_data, 0) == errQUEUE_FULL)
+				{
+					PRINTF("Queue is FULL!!!\r\n");
+				}
+				else
+					PRINTF("Queue writed!!!\r\n");
 			}
 		} while (kStatus_Success == error);
     }
