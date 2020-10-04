@@ -44,7 +44,7 @@ void SensorData_task(void *pvParameters)
 
 
     PRINTF("I2C1 module initialized!\r\n");
-    const TickType_t xDelay250ms = pdMS_TO_TICKS(250);
+    const TickType_t xDelay1ms = pdMS_TO_TICKS(1);
     bool isOK;
     isOK = MPU6050_ReadSensorWhoAmI(&master_rtos_handle);
 	if (isOK)
@@ -96,7 +96,7 @@ void SensorData_task(void *pvParameters)
 		PRINTF("X = %.3f; y = %.3f\r\n", mpu_angles.x, mpu_angles.y);
 
 
-    	vTaskDelay(xDelay250ms);
+    	vTaskDelay(xDelay1ms);
     }
 }
 
