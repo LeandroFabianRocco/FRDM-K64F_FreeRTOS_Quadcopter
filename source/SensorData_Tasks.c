@@ -7,7 +7,7 @@
 
 #include <SensorData_Tasks.h>
 #include "MPU6050.h"
-#include "PIDcontroller.h"
+
 
 
 
@@ -54,6 +54,23 @@ void SensorData_task(void *pvParameters)
 
 	float xyz_gravity[3];
 	float xyz_omega[3];
+
+	// Pitch structure initialization
+	struct pitchStruct pitchData;
+	pitchData.reference = 0;
+	pitchData.angle = 0;
+	pitchData.last_iError = 0;
+	pitchData.last_pError = 0;
+	pitchData.dt = 0;
+
+	// Roll structure initialization
+	struct rollStruct rollData;
+	rollData.reference = 0;
+	rollData.angle = 0;
+	rollData.last_iError = 0;
+	rollData.last_pError = 0;
+	rollData.dt = 0;
+
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);

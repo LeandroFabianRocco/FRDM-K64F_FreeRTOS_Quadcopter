@@ -15,6 +15,8 @@
 #include "MK64F12.h"
 #include "fsl_debug_console.h"
 #include "pin_mux.h"
+#include "PIDcontroller.h"
+#include "structs.h"
 
 
 /*******************************************************************************
