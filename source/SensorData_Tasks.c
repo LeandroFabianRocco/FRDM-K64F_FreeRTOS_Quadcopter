@@ -76,6 +76,9 @@ void SensorData_task(void *pvParameters)
 	mpu_angles.y = 0;
 	mpu_angles.dt = DT;
 
+	float pitchPID = 0;
+	float rollPID = 0;
+
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -84,6 +87,11 @@ void SensorData_task(void *pvParameters)
 		PRINTF("---> SensorData_Task!!\r\n");
 
 		MPU6050_ComplementaryFilterAngles(&master_rtos_handle, &mpu_angles);
+		rollData.angle = mpu_angles.y;
+		pitchData.angle = mpu_angles.x;
+
+		pitchPID = getPitchPID(&pitchData);
+		rollPID = getRollPID(&rollData);
 
     	//MPU6050_GetgAcceleration(&master_rtos_handle, xyz_gravity);
     	//MPU6050_GetAngularVelocity(&master_rtos_handle, xyz_omega);
@@ -91,7 +99,10 @@ void SensorData_task(void *pvParameters)
     	/*PRINTF("Gxyz = [%.3f, %.3f, %.3f]; Wxyz = [%.3f, %.3f, %.3f]\r\n",
     			xyz_gravity[0], xyz_gravity[1], xyz_gravity[2],
 				xyz_omega[0], xyz_omega[1], xyz_omega[2]);*/
-		PRINTF("X = %.3f; y = %.3f\r\n", mpu_angles.x, mpu_angles.y);
+		PRINTF("Roll = [%.3f, %.3f]; Pitch = [%.3f, %.3f]\r\n", mpu_angles.y,
+				rollPID,
+				mpu_angles.y,
+				pitchPID);
 
 
 		// Loop time delay
