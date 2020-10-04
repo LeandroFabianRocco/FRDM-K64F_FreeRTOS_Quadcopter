@@ -66,6 +66,23 @@
 // Definition of handle to update motors
 QueueHandle_t motors_queue = NULL;
 
+/*******************************************************************************
+ * PIT interrupt
+ ******************************************************************************/
+/* PIT0_IRQn interrupt handler */
+void PIT_CHANNEL_0_IRQHANDLER(void) {
+	PRINTF("PIT \r\n");
+
+
+  /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F
+     Store immediate overlapping exception return operation might vector to incorrect interrupt. */
+  #if defined __CORTEX_M && (__CORTEX_M == 4U)
+    __DSB();
+  #endif
+}
+
+
+
 
 /*********************************************************************
  * @brief   Main function
@@ -130,6 +147,10 @@ int main(void)
 			NULL,
 			configMAX_PRIORITIES - 1,
 			NULL);
+
+    // Start PIT module
+    NVIC_SetPriority(PIT0_IRQn, 6);
+    PIT_StartTimer(PIT_PERIPHERAL, PIT_CHANNEL_0);
 
 
     /*********************************************

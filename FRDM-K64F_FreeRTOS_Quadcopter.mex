@@ -904,6 +904,18 @@
          <dcdx_configurations/>
       </dcdx>
       <periphs name="Peripherals" version="7.0" enabled="true" update_project_code="true">
+         <dependencies>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.pit" description="PIT Driver not found in the toolchain/IDE project. Project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.pit" description="Unsupported version of the PIT Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. Project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">2.0.0</data>
+               </feature>
+            </dependency>
+         </dependencies>
          <generated_project_files>
             <file path="peripherals.c" update_enabled="true"/>
             <file path="peripherals.h" update_enabled="true"/>
@@ -915,15 +927,47 @@
             <functional_group name="BOARD_InitPeripherals" uuid="44a4d29c-ebc6-40ea-b72d-767d95eedc2f" called_from_default_init="true" id_prefix="" core="core0">
                <description></description>
                <options/>
-               <dependencies/>
-               <instances/>
+               <dependencies>
+                  <dependency resourceType="ClockOutput" resourceId="Bus_clock" description="Bus clock is inactive. Problem must be resolved in another tool." problem_level="2" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+               </dependencies>
+               <instances>
+                  <instance name="PIT" uuid="307c35d4-a400-4034-a080-fd03f216a16d" type="pit" type_id="pit_a4782ba5223c8a2527ba91aeb2bc4159" mode="LPTMR_GENERAL" peripheral="PIT" enabled="true" comment="" custom_name_enabled="false">
+                     <config_set name="fsl_pit">
+                        <setting name="enableRunInDebug" value="true"/>
+                        <struct name="timingConfig">
+                           <setting name="clockSource" value="BusInterfaceClock"/>
+                           <setting name="clockSourceFreq" value="BOARD_BootClockRUN"/>
+                        </struct>
+                        <array name="channels">
+                           <struct name="0">
+                              <setting name="channel_id" value="CHANNEL_0"/>
+                              <setting name="channelNumber" value="0"/>
+                              <setting name="enableChain" value="false"/>
+                              <setting name="timerPeriod" value="8kHz"/>
+                              <setting name="startTimer" value="false"/>
+                              <setting name="enableInterrupt" value="true"/>
+                              <struct name="interrupt">
+                                 <setting name="IRQn" value="PIT0_IRQn"/>
+                                 <setting name="enable_priority" value="false"/>
+                                 <setting name="priority" value="0"/>
+                                 <setting name="enable_custom_name" value="false"/>
+                              </struct>
+                           </struct>
+                        </array>
+                     </config_set>
+                  </instance>
+               </instances>
             </functional_group>
          </functional_groups>
          <components>
             <component name="system" uuid="f7102d96-6fee-4a76-9ba8-85b608da8bd7" type_id="system">
                <config_set_global name="global_system_definitions"/>
             </component>
-            <component name="msg" uuid="0a01eb37-7410-4955-b13d-21d8210955b6" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="46d91a8e-1d0e-4c8d-ada2-aa0591ffddab" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
             </component>
          </components>
