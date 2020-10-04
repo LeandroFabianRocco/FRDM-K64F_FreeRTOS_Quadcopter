@@ -71,6 +71,13 @@ void SensorData_task(void *pvParameters)
 	rollData.last_pError = 0;
 	rollData.dt = 0;
 
+	// Angles struct
+	// MPU6050 angles structure
+	struct MPU6050_angles mpu_angles;
+	mpu_angles.x = 0;
+	mpu_angles.y = 0;
+	mpu_angles.dt = 0;
+
     for (;;)
     {
     	GPIO_PortSet(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_PIN);
@@ -78,12 +85,15 @@ void SensorData_task(void *pvParameters)
 		GPIO_PortSet(BOARD_LED_BLUE_GPIO, 1u << BOARD_LED_BLUE_PIN);
 		PRINTF("---> SensorData_Task!!\r\n");
 
-    	MPU6050_GetgAcceleration(&master_rtos_handle, xyz_gravity);
-    	MPU6050_GetAngularVelocity(&master_rtos_handle, xyz_omega);
+		MPU6050_ComplementaryFilterAngles(&master_rtos_handle, &mpu_angles);
 
-    	PRINTF("Gxyz = [%.3f, %.3f, %.3f]; Wxyz = [%.3f, %.3f, %.3f]\r\n",
+    	//MPU6050_GetgAcceleration(&master_rtos_handle, xyz_gravity);
+    	//MPU6050_GetAngularVelocity(&master_rtos_handle, xyz_omega);
+
+    	/*PRINTF("Gxyz = [%.3f, %.3f, %.3f]; Wxyz = [%.3f, %.3f, %.3f]\r\n",
     			xyz_gravity[0], xyz_gravity[1], xyz_gravity[2],
-				xyz_omega[0], xyz_omega[1], xyz_omega[2]);
+				xyz_omega[0], xyz_omega[1], xyz_omega[2]);*/
+		PRINTF("X = %.3f; y = %.3f\r\n", mpu_angles.x, mpu_angles.y);
 
 
     	vTaskDelay(xDelay250ms);
