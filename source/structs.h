@@ -62,6 +62,12 @@ struct rollStruct{
 };
 
 
+struct MPU6050_angles{
+	float x;
+	float y;
+	float dt;
+};
+
 // Declaration of handle to update motors
 extern QueueHandle_t motors_queue;
 
