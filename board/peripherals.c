@@ -40,64 +40,10 @@ component:
 #include "peripherals.h"
 
 /***********************************************************************************************************************
- * BOARD_InitPeripherals functional group
- **********************************************************************************************************************/
-/***********************************************************************************************************************
- * PIT initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'PIT'
-- type: 'pit'
-- mode: 'LPTMR_GENERAL'
-- custom_name_enabled: 'false'
-- type_id: 'pit_a4782ba5223c8a2527ba91aeb2bc4159'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'PIT'
-- config_sets:
-  - fsl_pit:
-    - enableRunInDebug: 'true'
-    - timingConfig:
-      - clockSource: 'BusInterfaceClock'
-      - clockSourceFreq: 'BOARD_BootClockRUN'
-    - channels:
-      - 0:
-        - channel_id: 'CHANNEL_0'
-        - channelNumber: '0'
-        - enableChain: 'false'
-        - timerPeriod: '8kHz'
-        - startTimer: 'false'
-        - enableInterrupt: 'true'
-        - interrupt:
-          - IRQn: 'PIT0_IRQn'
-          - enable_priority: 'false'
-          - priority: '0'
-          - enable_custom_name: 'false'
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-const pit_config_t PIT_config = {
-  .enableRunInDebug = true
-};
-
-void PIT_init(void) {
-  /* Initialize the PIT. */
-  PIT_Init(PIT_PERIPHERAL, &PIT_config);
-  /* Set channel 0 period to 125 µs (7500 ticks). */
-  PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_0, PIT_CHANNEL_0_TICKS);
-  /* Enable interrupts from channel 0. */
-  PIT_EnableInterrupts(PIT_PERIPHERAL, PIT_CHANNEL_0, kPIT_TimerInterruptEnable);
-  /* Enable interrupt PIT_CHANNEL_0_IRQN request in the NVIC */
-  EnableIRQ(PIT_CHANNEL_0_IRQN);
-}
-
-/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals(void)
 {
-  /* Initialize components */
-  PIT_init();
 }
 
 /***********************************************************************************************************************
