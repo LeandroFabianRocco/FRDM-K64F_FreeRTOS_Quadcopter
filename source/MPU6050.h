@@ -10,10 +10,19 @@
 #include "fsl_i2c_freertos.h"
 #include "fsl_debug_console.h"
 
+#include "math.h"
+
+#include "structs.h"
+
 
 
 #ifndef MPU6050_H_
 #define MPU6050_H_
+
+
+// Complementary filter alpha
+#define ALPHA	0.3
+
 
 // Definitions for MPU6050 module
 // Sensitivity scale factor
@@ -200,6 +209,36 @@ void MPU6050_GetAngularVelocity(i2c_rtos_handle_t *master_handle, float *omega);
  * @return void
  *********************************************************************************************/
 void MPU6050_Read_Gyro_Data(i2c_rtos_handle_t *master_handle, uint8_t device_addr, int16_t *xyz_gyro);
+
+
+/*********************************************************************************************
+ * @brief Get the X angle from accelerometer
+ *
+ * @param void
+ *
+ * @return roll angle
+ *********************************************************************************************/
+float MPU6050_GetXAngle(i2c_rtos_handle_t *master_handle);
+
+
+/*********************************************************************************************
+ * @brief Get the Y angle from accelerometer
+ *
+ * @param void
+ *
+ * @return pitch angle
+ *********************************************************************************************/
+float MPU6050_GetYAngle(i2c_rtos_handle_t *master_handle);
+
+
+/*********************************************************************************************
+ * @brief Get X and Y angles with complementary filter
+ *
+ * @param mpu_angles structure
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_ComplementaryFilterAngles(i2c_rtos_handle_t *master_handle, struct MPU6050_angles *mpu_angles);
 
 
 #endif /* MPU6050_H_ */

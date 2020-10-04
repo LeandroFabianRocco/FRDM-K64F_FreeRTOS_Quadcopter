@@ -267,3 +267,63 @@ void MPU6050_Read_Gyro_Data(i2c_rtos_handle_t *master_handle, uint8_t device_add
 	xyz_gyro[2] = (((int16_t)readBuff[4]) << 8) | readBuff[5];
 }
 
+
+/*********************************************************************************************
+ * @brief Get the X angle from accelerometer
+ *
+ * @param void
+ *
+ * @return roll angle
+ *********************************************************************************************/
+float MPU6050_GetXAngle(i2c_rtos_handle_t *master_handle)
+{
+	int16_t xyz_accel[3];
+	MPU6050_Read_Accel_Data(master_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
+
+	float sum_of_squares = powf((float)xyz_accel[0], 2) + powf((float)xyz_accel[2], 2);
+	float root = sqrtf(sum_of_squares);
+	float Xangle = atanf(xyz_accel[1] / root) * 57.2957;
+
+	return Xangle - 1.8104;
+}
+
+
+/*********************************************************************************************
+ * @brief Get the Y angle from accelerometer
+ *
+ * @param void
+ *
+ * @return pitch angle
+ *********************************************************************************************/
+float MPU6050_GetYAngle(i2c_rtos_handle_t *master_handle)
+{
+	int16_t xyz_accel[3];
+	MPU6050_Read_Accel_Data(master_handle, MPU6050_DEVICE_ADDRESS_0, xyz_accel);
+
+	float sum_of_squares = powf((float)xyz_accel[1], 2) + powf((float)xyz_accel[2], 2);
+	float root = sqrtf(sum_of_squares);
+	float Yangle = atanf(xyz_accel[0] / root) * 57.2957;
+
+	return Yangle + 3.4232;
+}
+
+
+/*********************************************************************************************
+ * @brief Get X and Y angles with complementary filter
+ *
+ * @param mpu_angles structure
+ *
+ * @return void
+ *********************************************************************************************/
+void MPU6050_ComplementaryFilterAngles(i2c_rtos_handle_t *master_handle, struct MPU6050_angles *mpu_angles)
+{
+	float x_angle = MPU6050_GetXAngle(master_handle);
+	float y_angle = MPU6050_GetYAngle(master_handle);
+
+	float omega[3];
+
+	MPU6050_GetAngularVelocity(master_handle, omega);
+
+	mpu_angles->x = (1 - ALPHA) * (mpu_angles->x + omega[0] * mpu_angles->dt) + ALPHA * x_angle;
+	mpu_angles->y = (1 - ALPHA) * (mpu_angles->y + omega[1] * mpu_angles->dt) + ALPHA * y_angle;
+}
