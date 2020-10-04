@@ -94,6 +94,7 @@ void SensorData_task(void *pvParameters)
 		PRINTF("X = %.3f; y = %.3f\r\n", mpu_angles.x, mpu_angles.y);
 
 
+		// Loop time delay
     	vTaskDelay(looptime);
     }
 }
